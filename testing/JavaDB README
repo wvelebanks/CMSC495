@@ -1,0 +1,67 @@
+Creating Keys and Certificates after downloading/installing OpenSSL
+
+Create a directory to store you keys and certificates
+
+Create Root Certificate:
+private key(PROTECT THIS)- openssl genrsa -out ca-key.pem 2048
+self-signed certificate(installed on all client machines) - openssl req -x509 -new -nodes -key ca-key.pem -sha256 -days 3600 -out ca-cert.pem
+
+EX:
+US
+Maryland
+Columbia
+UMUC
+CMSC495
+umuc.time.com
+someemail@gmail.com
+
+For Server:
+Create a private key - openssl genrsa -out server-key.pem 2048
+
+Create Certificate Signing Request (CSR) - openssl req -new -key server-key.pem -out server-req.pem
+For Common Name put server name.
+
+Create signed certificate - openssl x509 -req -in server-req.pem -CA ca-cert.pem -CAkey ca-key.pem -CAcreateserial -out server-cert.pem -days 500 -sha256
+
+EX:
+US
+Maryland
+Columbia
+UMUC
+CMSC495
+server-name
+someemail@gmail.com
+
+For each User (DONE ONCE when hired):
+Create a private key - openssl genrsa -out name-key.pem 2048
+
+Create Certificate Signing Request (CSR) - openssl req -new -key name-key.pem -out name-req.pem
+For Common Name put employees name.
+
+Create signed certificate - openssl x509 -req -in name-req.pem -CA ca-cert.pem -CAkey ca-key.pem -CAcreateserial -out name-cert.pem -days 500 -sha256
+
+EX:
+US
+Maryland
+Columbia
+UMUC
+CMSC495
+name
+someemail@gmail.com
+
+After this is done you will need to create the keystore and truststore, follow the directions in the link below.
+
+Connector/J Download (I happened to download the development release 6.0.6) - unzip when you create your java project add the jar to your library
+https://dev.mysql.com/downloads/connector/j/5.1.html
+
+keystore/truststore Setup
+https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-using-ssl.html
+
+JDBC URL Format
+https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-configuration-properties.html
+
+Examples:
+https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-usagenotes-connect-drivermanager.html
+https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-usagenotes-statements.html#connector-j-examples-execute-select
+
+EDIT THE PATHS IN THE JavaDB test program so that they point to the correct folders on your system.
