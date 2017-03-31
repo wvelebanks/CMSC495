@@ -1,5 +1,7 @@
 # CMSC495: Development of Capstone Project
 
+Project Name: Employee's Time Management System
+
 Team members:
 
 Wendy V.
