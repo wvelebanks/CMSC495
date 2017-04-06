@@ -99,10 +99,10 @@ public class JavaDB {
     public static Connection dbConnect() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.setProperty("javax.net.ssl.keyStore", "C:/Users/Justin/Desktop/mysql/pk_certs/keystore");
-            System.setProperty("javax.net.ssl.keyStorePassword", "P@$$w0rd");
-            System.setProperty("javax.net.ssl.trustStore", "C:/Users/Justin/Desktop/mysql/pk_certs/truststore");
-            System.setProperty("javax.net.ssl.trustStorePassword", "P@$$w0rd");
+            System.setProperty("javax.net.ssl.keyStore", "C:/Users/Justin/Desktop/mysql/test_certs_keys/client.keystore");
+            System.setProperty("javax.net.ssl.keyStorePassword", "somepassword");
+            System.setProperty("javax.net.ssl.trustStore", "C:/Users/Justin/Desktop/mysql/test_certs_keys/truststore");
+            System.setProperty("javax.net.ssl.trustStorePassword", "someotherpassword");
         } catch (ClassNotFoundException ex) {
         }
 
@@ -111,8 +111,8 @@ public class JavaDB {
         String password = "P@$$w0rd#787!$";
         String dbURL = "jdbc:mysql://localhost/mysql"
                 + "?verifyServerCertificate=true"
-                + "&clientCertificateKeyStoreUrl=file:///C:/Users/Justin/Desktop/mysql/pk_certs/keystore"
-                + "&clientCertificateKeyStorePassword=P@$$w0rd"
+                + "&clientCertificateKeyStoreUrl=file:///C:/Users/Justin/Desktop/mysql/test_certs_keys/client.keystore"
+                + "&clientCertificateKeyStorePassword=somepassword"
                 + "&useSSL=true"
                 + "&requireSSL=true";
 
@@ -218,9 +218,9 @@ public class JavaDB {
     public static KeyPair loadKey() {
         try {
             KeyStore ks = KeyStore.getInstance("JKS");
-            InputStream readStream = new FileInputStream("C:/Users/Justin/Desktop/mysql/pk_certs/pk12_store/client.keystore");
-            char[] pass_array = "P@$$w0rd".toCharArray();
-            String alias = "jrmullins";
+            InputStream readStream = new FileInputStream("C:/Users/Justin/Desktop/mysql/test_certs_keys/client.keystore");
+            char[] pass_array = "somepassword".toCharArray();
+            String alias = "name";
             ks.load(readStream, pass_array);
 
             // Get private key
