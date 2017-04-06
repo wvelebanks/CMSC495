@@ -1,7 +1,49 @@
 Setup before running java test program:
 Download & install the correct OpenSSL version for your system
 
-References:
+Properly Creating User accounts (See last example):
+
+ISSUER 'issuer'
+
+Places the restriction on connection attempts that the client must present a valid X509 certificate issued by CA 'issuer'. If the client presents a certificate that is valid but has a different issuer, the server rejects the connection. Use of X509 certificates always implies encryption, so the SSL option is unnecessary in this case.
+
+Because ISSUER implies the requirements of X509, the client must specify the --ssl-key and --ssl-cert options to connect. (It is recommended but not required that --ssl-ca also be specified so that the public certificate provided by the server can be verified.)
+
+CREATE USER 'jeffrey'@'localhost'
+  REQUIRE ISSUER '/C=SE/ST=Stockholm/L=Stockholm/
+    O=MySQL/CN=CA/emailAddress=ca@example.com';
+SUBJECT 'subject'
+
+Places the restriction on connection attempts that the client must present a valid X509 certificate containing the subject subject. If the client presents a certificate that is valid but has a different subject, the server rejects the connection. Use of X509 certificates always implies encryption, so the SSL option is unnecessary in this case.
+
+Because SUBJECT implies the requirements of X509, the client must specify the --ssl-key and --ssl-cert options to connect. (It is recommended but not required that --ssl-ca also be specified so that the public certificate provided by the server can be verified.)
+
+CREATE USER 'jeffrey'@'localhost'
+  REQUIRE SUBJECT '/C=SE/ST=Stockholm/L=Stockholm/
+    O=MySQL demo client certificate/
+    CN=client/emailAddress=client@example.com';
+MySQL does a simple string comparison of the 'subject' value to the value in the certificate, so lettercase and component ordering must be given exactly as present in the certificate.
+
+Note
+Regarding emailAddress, see the note in the description of REQUIRE ISSUER.
+
+CIPHER 'cipher'
+
+Requests a specific cipher method for encrypting connections. This option is needed to ensure that ciphers and key lengths of sufficient strength are used. SSL itself can be weak if old algorithms using short encryption keys are used.
+
+CREATE USER 'jeffrey'@'localhost' REQUIRE CIPHER 'DHE-RSA-AES256-SHA';
+The SUBJECT, ISSUER, and CIPHER options can be combined in the REQUIRE clause:
+
+CREATE USER 'name'@'localhost'
+  REQUIRE SUBJECT '/C=US/ST=Maryland/L=Adelphi/
+    O=UMUC/
+    CN=name/emailAddress=useremail@gmail.com'
+  AND ISSUER '/C=US/ST=Maryland/L=Adelphi/
+    O=UMUC/CN=umuc.etms/emailAddress=schoolemail@gmail.com'
+  AND CIPHER 'DHE-RSA-AES256-SHA';
+The order of the options does not matter, but no option can be specified twice. The AND keyword is optional between REQUIRE options.
+
+Other References:
 
 Connector/J Download (I happened to download the development release 6.0.6) - unzip when you create your java project add the jar to your library
 https://dev.mysql.com/downloads/connector/j/5.1.html
