@@ -1,0 +1,5 @@
+This directory has the certificates and keys needed for testing.
+
+pk12 password - "pk12password"
+keystore password - "somepassword"
+truststore password - "someotherpassword"
