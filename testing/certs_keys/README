@@ -3,3 +3,80 @@ This directory has the certificates and keys needed for testing.
 pk12 password - "pk12password"
 keystore password - "somepassword"
 truststore password - "someotherpassword"
+
+
+Certificate & Key Creation:
+Create a directory to store your keys and certificates
+Create Root Certificate:
+
+Private key(PROTECT THIS)
+openssl genrsa -out ca-key.pem 2048
+
+Self-signed Root certificate(installed on all client machines)
+openssl req -x509 -new -nodes -key ca-key.pem -sha256 -days 3600 -out ca-cert.pem
+EX:
+US
+Maryland
+Adelphi
+UMUC
+CMSC495
+umuc.etms
+schoolemail@gmail.com
+
+For Server:
+
+Create a private key
+openssl genrsa -out server-key.pem 2048
+
+Create Certificate Signing Request (CSR)
+openssl req -new -key server-key.pem -out server-req.pem
+	For Common Name put server name.
+
+Create signed certificate
+openssl x509 -req -in server-req.pem -CA ca-cert.pem -CAkey ca-key.pem -CAcreateserial -out server-cert.pem -days 500 -sha256
+EX:
+US
+Maryland
+Adelphi
+UMUC
+CMSC495
+server-name
+adminemail@gmail.com
+
+
+For each User (DONE ONCE when hired):
+
+Create a private key
+openssl genrsa -out name-key.pem 2048
+
+Create Certificate Signing Request (CSR)
+openssl req -new -key name-key.pem -out name-req.pem
+	For Common Name put employees ID
+
+Create signed certificate
+openssl x509 -req -in name-req.pem -CA ca-cert.pem -CAkey ca-key.pem -CAcreateserial -out name-cert.pem -days 500 -sha256
+EX:
+US
+Maryland
+Adelphi
+UMUC
+CMSC495
+name
+useremail@gmail.com
+
+Keystore and Truststore Creation
+
+
+The truststore should be generated on a secure central server (not locally, except in our testing) password for testing truststore is “someotherpassword”.
+keytool -import -alias mysqlCACert -file ca-cert.pem -keystore truststore
+keytool -import -alias mysqlServerCert -file server-cert.pem -keystore truststore
+The keystore will be generated in the users profile.
+Create pkcs12 file and keystore:
+Convert x509 Certificate and Key to a pkcs12 file
+openssl pkcs12 -export -in name-cert.pem -inkey name-key.pem -out name.p12 -name [some-alias] -CAfile ca-cert.pem -caname rootCA
+Note: Make sure you put a password on the p12 file (test pk12 file password is “pk12password”)
+Research -chain option which preserves the full certificate chain.
+Convert the pkcs12 file to a java keystore
+
+keytool -importkeystore -deststorepass [somepassword] -destkeypass [somepassword] -destkeystore client.keystore -srckeystore name.p12 -srcstoretype PKCS12 -srcstorepass pk12password -alias [name]
+Reference: https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-using-ssl.html
