@@ -1,7 +1,10 @@
 Setup before running java test program:
 Download & install the correct OpenSSL version for your system
 
-Properly Creating User accounts (See last example):
+Download the test certs and keys from github, or create your own.
+Set the paths in the my.ini file for both the client and server. Also make sure to change the paths in the java program.
+
+Properly Creating Secure User accounts (See last example):
 
 ISSUER 'issuer'
 
