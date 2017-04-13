@@ -1,7 +1,8 @@
 This directory has the certificates and keys needed for testing.
 
 pk12 password - "pk12password"
-keystore password - "somepassword"
+client.keystore password - "somepassword"
+user.keystore password - "somepassword"
 truststore password - "someotherpassword"
 
 
@@ -43,6 +44,25 @@ CMSC495
 server-name
 adminemail@gmail.com
 
+For Client Software:
+Create a private key - openssl genrsa -out client-key.pem 2048
+
+Create Certificate Signing Request (CSR) - openssl req -new -key client-key.pem -out client-req.pem
+For Common Name put etms-client.
+
+Create signed certificate - openssl x509 -req -in client-req.pem -CA ca-cert.pem -CAkey ca-key.pem -CAcreateserial -out client-cert.pem -days 500 -sha256
+
+EX:
+US
+Maryland
+Adelphi
+UMUC
+CMSC495
+etms-client
+etmsemail@gmail.com
+
+no challenge password
+no optional company name
 
 For each User (DONE ONCE when hired):
 
