@@ -1,8 +1,20 @@
 Setup before running java test program:
 Download & install the correct OpenSSL version for your system
+For Windows: https://slproweb.com/products/Win32OpenSSL.html
+
+Download & install MySQL 5.7:
+https://dev.mysql.com/downloads/mysql/
 
 Download the test certs and keys from github, or create your own.
 Set the paths in the my.ini file for both the client and server. Also make sure to change the paths in the java program, (etms.cfg, coming soon).
+
+Make sure your MySQL server is loading the my.ini file when it boots
+Reference: https://dev.mysql.com/doc/refman/5.7/en/windows-start-service.html
+
+I would manually try logging into the server at this point to test the connection.  Make sure you can manually connect before moving on to using
+the java code to connect. On command line type "mysql -u root -p" to connect locally using the root account.
+
+Below is not necessary for testing purposes but should be how the client-software user is created.
 
 Properly Create Secure Client-Software account (See last example):
 
