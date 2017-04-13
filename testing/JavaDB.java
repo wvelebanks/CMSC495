@@ -1,6 +1,7 @@
 package javadb;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -15,8 +16,7 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Properties;
 
 /**
  * Proof of concept code I've worked on.
@@ -26,7 +26,8 @@ import java.util.logging.Logger;
 public class JavaDB {
 
     /**
-     * Main function that executes the ETMS client. Current code is for testing only.
+     * Main function that executes the ETMS client. Current code is for testing
+     * only.
      * <p>
      * DB Query example from:
      * https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-usagenotes-statements.html
@@ -35,9 +36,7 @@ public class JavaDB {
      */
     public static void main(String[] args) {
         // The database connection to be used for any querries or updates
-        // All parameters should be variables that are read-in from web GUI or configuration file
-        Connection conn = dbConnect("root", "password", "localhost", "C:/Users/Justin/Desktop/mysql/test_certs_keys/client.keystore",
-                "somepassword", "C:/Users/Justin/Desktop/mysql/test_certs_keys/truststore", "someotherpassword");
+        Connection conn = dbConnect(loadConfig());
         // Statement objects allow you to execute basic SQL queries
         Statement stmt = null;
         // ResultSet objects retrieve the results from the Statement objects
@@ -48,7 +47,7 @@ public class JavaDB {
             stmt = conn.createStatement();
             // executeQuery(String) allows you to do a SELECT query
             // executeUpdate(String) allows you to do a UPDATE, INSERT, or DELETE statement
-            rs = stmt.executeQuery("select user from user");
+            rs = stmt.executeQuery("select user from user;");
             // Loop through the ResultSet and print out results
             while (rs.next()) {
                 System.out.println(rs.getString(1));
@@ -67,7 +66,7 @@ public class JavaDB {
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
         } catch (IOException ex) {
-            Logger.getLogger(JavaDB.class.getName()).log(Level.SEVERE, null, ex);
+            // handle excepion
         } finally {
             // it is a good idea to release resources in a finally{} block
             // in reverse-order of their creation if they are no-longer needed
@@ -93,20 +92,31 @@ public class JavaDB {
 
     /**
      * Connects a client to a MySQL server using the Connector/J driver. Only
-     * connects to the database using SSL/TLS connection. 
+     * connects to the database using SSL/TLS connection.
      *
-     * @param username the username to connect to the database with
-     * @param password the password to connect to the database with
-     * @param server the database server to connect to
-     * @param keystorePath the path to the keystore
-     * @param keystorePassword the password used to protect the keystore
-     * @param truststorePath the path to the truststore
-     * @param truststorePassword the password used to protect the truststore
+     * @param applicationProp a set of properties from the etms.cfg file to
+     * establish a db connection
      * @return a secure Connection to a MySQL database
      */
-    public static Connection dbConnect(String username, String password, String server,
+    /*public static Connection dbConnect(String username, String password, String server,
             String keystorePath, String keystorePassword, String truststorePath, 
-            String truststorePassword) {
+            String truststorePassword) {*/
+    public static Connection dbConnect(Properties applicationProp) {
+        // the username to connect to the database with
+        String username = applicationProp.getProperty("client_username");
+        // the password to connect to the database with
+        String password = applicationProp.getProperty("client_password");
+        // the database server to connect to
+        String server = applicationProp.getProperty("server_address");
+        // the path to the keystore
+        String keystorePath = applicationProp.getProperty("keystore_path");
+        // the password used to protect the keystore
+        String keystorePassword = applicationProp.getProperty("keystore_password");
+        // the path to the truststore
+        String truststorePath = applicationProp.getProperty("truststore_path");
+        // the password used to protect the truststore
+        String truststorePassword = applicationProp.getProperty("truststore_password");
+
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             // The below four lines should have parameters that are read-in to set the paths and passwords
@@ -120,12 +130,11 @@ public class JavaDB {
         Connection conn = null;
         String dbURL = "jdbc:mysql://" + server + "/mysql"
                 + "?verifyServerCertificate=true"
-       //         + "&clientCertificateKeyStoreUrl=file:///C:/Users/Justin/Desktop/mysql/test_certs_keys/client.keystore"
-        //        + "&clientCertificateKeyStorePassword=somepassword"
                 + "&useSSL=true"
-                + "&requireSSL=true"; 
+                + "&requireSSL=true";
         try {
             conn = DriverManager.getConnection(dbURL, username, password);
+            //conn = DriverManager.getConnection(dbURL);
         } catch (SQLException ex) {
             // handle any errors
             System.out.println("SQLException: " + ex.getMessage());
@@ -133,6 +142,27 @@ public class JavaDB {
             System.out.println("VendorError: " + ex.getErrorCode());
         }
         return conn;
+    }
+
+    /**
+     * Loads the "etms.cfg" file from the same path where the program is
+     * located. The etms.cfg file contains information critical to setup a
+     * secure database connection from the client to the server.
+     *
+     * @return a Properties stream containing the client configuration from
+     * etms.cfg
+     */
+    public static Properties loadConfig() {
+        Properties applicationProps = new Properties();
+
+        try (FileInputStream in = new FileInputStream("etms.cfg")) {
+            applicationProps.load(in);
+        } catch (FileNotFoundException ex) {
+            // handle exception
+        } catch (IOException ex) {
+            // handle exception
+        }
+        return applicationProps;
     }
 
     /**
@@ -152,7 +182,7 @@ public class JavaDB {
 
     /**
      * Save the data in the web GUI timesheet to the database.
-     * 
+     *
      * @param conn the connection to the database
      */
     public static void saveTimesheet(Connection conn) {
@@ -175,8 +205,8 @@ public class JavaDB {
 
     /**
      * Returns a hash of the String parameter provided in a byte array. This
-     * function uses the SHA-256 hashing algorithm to do a one-way hash of
-     * the string.
+     * function uses the SHA-256 hashing algorithm to do a one-way hash of the
+     * string.
      *
      * @param timesheetString a String that is to be hashed
      * @return an array of bytes that represent the hash of hashString
@@ -217,6 +247,11 @@ public class JavaDB {
      * Got code from here:
      * https://blogs.oracle.com/weblogic-config-runtime/entry/a_short_utility_program_to
      *
+     * @param keystorePath a String path to the keystore
+     * @param keystorePassword a String that provides the password for the
+     * keystore
+     * @param alias the user who's certificate/keys we want to pull from the
+     * keystore
      * @return a KeyPair which contains both a public and a private key
      */
     public static KeyPair loadKey(String keystorePath, String keystorePassword, String alias) {
@@ -256,6 +291,11 @@ public class JavaDB {
      * https://kodejava.org/how-to-create-a-digital-signature-and-sign-data/
      *
      * @param signme the String content that is to be digitally signed
+     * @param keystorePath a String path to the keystore
+     * @param keystorePassword a String that provides the password for the
+     * keystore
+     * @param alias the user who's certificate/keys we want to pull from the
+     * keystore
      */
     public static void digitalSign(String signme, String keystorePath, String keystorePassword, String alias) {
         try {
@@ -287,6 +327,10 @@ public class JavaDB {
      * https://kodejava.org/how-to-verify-digital-signature-of-a-signed-data/
      *
      * @param verifyme the String content that is to be verified
+     * @param publicKeyEncoded the public key in an encoded format as a byte
+     * array, this is used to decrypt the digital signature
+     * @param digitalSignature the digital signature as a byte array that is to
+     * be, verified.
      * @return true if the digital signature was verified, false if it was not
      * or could not be verified
      */
