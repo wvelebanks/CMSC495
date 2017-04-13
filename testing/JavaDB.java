@@ -36,7 +36,7 @@ public class JavaDB {
     public static void main(String[] args) {
         // The database connection to be used for any querries or updates
         // All parameters should be variables that are read-in from web GUI or configuration file
-        Connection conn = dbConnect("root", "P@$$w0rd#787!$", "localhost", "C:/Users/Justin/Desktop/mysql/test_certs_keys/client.keystore",
+        Connection conn = dbConnect("root", "password", "localhost", "C:/Users/Justin/Desktop/mysql/test_certs_keys/client.keystore",
                 "somepassword", "C:/Users/Justin/Desktop/mysql/test_certs_keys/truststore", "someotherpassword");
         // Statement objects allow you to execute basic SQL queries
         Statement stmt = null;
@@ -56,7 +56,7 @@ public class JavaDB {
 
             // TEST THE SIGNING AND VERIFYING FEATURES
             // digitally sign the string "test" using the users private key from the keystore
-            digitalSign("test", "C:/Users/Justin/Desktop/mysql/test_certs_keys/client.keystore", "somepassword", "name");
+            digitalSign("test", "C:/Users/Justin/Desktop/mysql/test_certs_keys/user.keystore", "somepassword", "name");
             // verify the digital signature using the users public key and the digital signature
             digitalVerify("test", Files.readAllBytes(Paths.get("publickey")), Files.readAllBytes(Paths.get("signature")));
             // END TEST
