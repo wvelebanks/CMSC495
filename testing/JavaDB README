@@ -2,9 +2,9 @@ Setup before running java test program:
 Download & install the correct OpenSSL version for your system
 
 Download the test certs and keys from github, or create your own.
-Set the paths in the my.ini file for both the client and server. Also make sure to change the paths in the java program.
+Set the paths in the my.ini file for both the client and server. Also make sure to change the paths in the java program, (etms.cfg, coming soon).
 
-Properly Creating Secure User accounts (See last example):
+Properly Create Secure Client-Software account (See last example):
 
 ISSUER 'issuer'
 
@@ -37,13 +37,15 @@ Requests a specific cipher method for encrypting connections. This option is nee
 CREATE USER 'jeffrey'@'localhost' REQUIRE CIPHER 'DHE-RSA-AES256-SHA';
 The SUBJECT, ISSUER, and CIPHER options can be combined in the REQUIRE clause:
 
-CREATE USER 'name'@'localhost'
+Example consisting of all three Certificate requirements (Still should require password as well):
+
+CREATE USER 'etms-client'@'localhost'
   REQUIRE SUBJECT '/C=US/ST=Maryland/L=Adelphi/
     O=UMUC/
-    CN=name/emailAddress=useremail@gmail.com'
+    CN=etms-client/emailAddress=etmsemail@gmail.com'
   AND ISSUER '/C=US/ST=Maryland/L=Adelphi/
     O=UMUC/CN=umuc.etms/emailAddress=schoolemail@gmail.com'
-  AND CIPHER 'DHE-RSA-AES256-SHA';
+  AND CIPHER 'DHE-RSA-AES128-SHA';
 The order of the options does not matter, but no option can be specified twice. The AND keyword is optional between REQUIRE options.
 
 Other References:
