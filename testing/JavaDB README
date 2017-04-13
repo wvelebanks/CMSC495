@@ -2,7 +2,7 @@ Setup before running java test program:
 Download & install the correct OpenSSL version for your system
 For Windows: https://slproweb.com/products/Win32OpenSSL.html
 
-Download & install MySQL 5.7:
+Download & install MySQL 5.7 (I am using MySQL 5.7.17 for Windows 64bit):
 https://dev.mysql.com/downloads/mysql/
 
 Download the test certs and keys from github, or create your own.
