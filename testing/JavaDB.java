@@ -15,8 +15,8 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Proof of concept code I've worked on.
@@ -26,7 +26,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class JavaDB {
 
     /**
-     * Main function that executes the ETMS client.
+     * Main function that executes the ETMS client. Current code is for testing only.
      * <p>
      * DB Query example from:
      * https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-usagenotes-statements.html
@@ -35,7 +35,9 @@ public class JavaDB {
      */
     public static void main(String[] args) {
         // The database connection to be used for any querries or updates
-        Connection conn = dbConnect();
+        // All parameters should be variables that are read-in from web GUI or configuration file
+        Connection conn = dbConnect("root", "P@$$w0rd#787!$", "localhost", "C:/Users/Justin/Desktop/mysql/test_certs_keys/client.keystore",
+                "somepassword", "C:/Users/Justin/Desktop/mysql/test_certs_keys/truststore", "someotherpassword");
         // Statement objects allow you to execute basic SQL queries
         Statement stmt = null;
         // ResultSet objects retrieve the results from the Statement objects
@@ -46,17 +48,17 @@ public class JavaDB {
             stmt = conn.createStatement();
             // executeQuery(String) allows you to do a SELECT query
             // executeUpdate(String) allows you to do a UPDATE, INSERT, or DELETE statement
-            rs = stmt.executeQuery("SELECT USER FROM USER");
+            rs = stmt.executeQuery("select user from user");
             // Loop through the ResultSet and print out results
             while (rs.next()) {
                 System.out.println(rs.getString(1));
             }
 
             // TEST THE SIGNING AND VERIFYING FEATURES
-            // digitally sign the string "test"
-            digitalSign("test");
-            // verify the digital signature
-            digitalVerify("test");
+            // digitally sign the string "test" using the users private key from the keystore
+            digitalSign("test", "C:/Users/Justin/Desktop/mysql/test_certs_keys/client.keystore", "somepassword", "name");
+            // verify the digital signature using the users public key and the digital signature
+            digitalVerify("test", Files.readAllBytes(Paths.get("publickey")), Files.readAllBytes(Paths.get("signature")));
             // END TEST
 
         } catch (SQLException ex) {
@@ -64,6 +66,8 @@ public class JavaDB {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
+        } catch (IOException ex) {
+            Logger.getLogger(JavaDB.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             // it is a good idea to release resources in a finally{} block
             // in reverse-order of their creation if they are no-longer needed
@@ -89,33 +93,37 @@ public class JavaDB {
 
     /**
      * Connects a client to a MySQL server using the Connector/J driver. Only
-     * connects to the database using SSL/TLS connection. NOTE: Need to add
-     * parameters for username, password, MySQL server address, MySQL table,
-     * path to certificate truststore, truststore password,
-     * clientCertificateKeyStoreUrl, and clientCertifcateKeyStorePassword.
+     * connects to the database using SSL/TLS connection. 
      *
+     * @param username the username to connect to the database with
+     * @param password the password to connect to the database with
+     * @param server the database server to connect to
+     * @param keystorePath the path to the keystore
+     * @param keystorePassword the password used to protect the keystore
+     * @param truststorePath the path to the truststore
+     * @param truststorePassword the password used to protect the truststore
      * @return a secure Connection to a MySQL database
      */
-    public static Connection dbConnect() {
+    public static Connection dbConnect(String username, String password, String server,
+            String keystorePath, String keystorePassword, String truststorePath, 
+            String truststorePassword) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.setProperty("javax.net.ssl.keyStore", "C:/Users/Justin/Desktop/mysql/test_certs_keys/client.keystore");
-            System.setProperty("javax.net.ssl.keyStorePassword", "somepassword");
-            System.setProperty("javax.net.ssl.trustStore", "C:/Users/Justin/Desktop/mysql/test_certs_keys/truststore");
-            System.setProperty("javax.net.ssl.trustStorePassword", "someotherpassword");
+            // The below four lines should have parameters that are read-in to set the paths and passwords
+            System.setProperty("javax.net.ssl.keyStore", keystorePath);
+            System.setProperty("javax.net.ssl.keyStorePassword", keystorePassword);
+            System.setProperty("javax.net.ssl.trustStore", truststorePath);
+            System.setProperty("javax.net.ssl.trustStorePassword", truststorePassword);
         } catch (ClassNotFoundException ex) {
         }
 
         Connection conn = null;
-        String username = "root";
-        String password = "P@$$w0rd#787!$";
-        String dbURL = "jdbc:mysql://localhost/mysql"
+        String dbURL = "jdbc:mysql://" + server + "/mysql"
                 + "?verifyServerCertificate=true"
-                + "&clientCertificateKeyStoreUrl=file:///C:/Users/Justin/Desktop/mysql/test_certs_keys/client.keystore"
-                + "&clientCertificateKeyStorePassword=somepassword"
+       //         + "&clientCertificateKeyStoreUrl=file:///C:/Users/Justin/Desktop/mysql/test_certs_keys/client.keystore"
+        //        + "&clientCertificateKeyStorePassword=somepassword"
                 + "&useSSL=true"
-                + "&requireSSL=true";
-
+                + "&requireSSL=true"; 
         try {
             conn = DriverManager.getConnection(dbURL, username, password);
         } catch (SQLException ex) {
@@ -133,18 +141,21 @@ public class JavaDB {
      * timesheet to load in data, or to the digitalSign(String) and
      * digitalVerify(String) functions.
      *
+     * @param conn the connection to the database
      * @param payperiodDate date for the payperiod in yyyymmdd format
      * @return a String that contains all the fields for timesheet
      */
-    public static String loadTimesheet(int payperiodDate) {
+    public static String loadTimesheet(Connection conn, int payperiodDate) {
         String test = null;
         return test;
     }
 
     /**
      * Save the data in the web GUI timesheet to the database.
+     * 
+     * @param conn the connection to the database
      */
-    public static void saveTimesheet() {
+    public static void saveTimesheet(Connection conn) {
         // First verify if the data in the web GUI timesheet is valid
         verifyTimesheet();
 
@@ -164,9 +175,8 @@ public class JavaDB {
 
     /**
      * Returns a hash of the String parameter provided in a byte array. This
-     * function uses the HMAC SHA256 hashing algorithm to do a one-way hash of
-     * the string. A hard-coded secret key is used as part of this hashing
-     * function.
+     * function uses the SHA-256 hashing algorithm to do a one-way hash of
+     * the string.
      *
      * @param timesheetString a String that is to be hashed
      * @return an array of bytes that represent the hash of hashString
@@ -174,17 +184,11 @@ public class JavaDB {
     public static byte[] hashTimesheet(String timesheetString) {
         byte[] thehash = null;
         try {
-            String key = "1234";
-
             // Setup the hashing algorthim to be used
-            Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
-            // Create the secretKey
-            SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), "HmacSHA256");
-            // Initialize the hashing algorithm using the secretKey
-            sha256_HMAC.init(secretKey);
-            // Hash the timesheetString parameter
-            thehash = sha256_HMAC.doFinal(timesheetString.getBytes());
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            // Generate the hash byte array and set thehash equal to it
+            thehash = md.digest(timesheetString.getBytes());
+        } catch (NoSuchAlgorithmException e) {
             //handle the exception
         }
         return thehash;
@@ -215,12 +219,11 @@ public class JavaDB {
      *
      * @return a KeyPair which contains both a public and a private key
      */
-    public static KeyPair loadKey() {
+    public static KeyPair loadKey(String keystorePath, String keystorePassword, String alias) {
         try {
             KeyStore ks = KeyStore.getInstance("JKS");
-            InputStream readStream = new FileInputStream("C:/Users/Justin/Desktop/mysql/test_certs_keys/client.keystore");
-            char[] pass_array = "somepassword".toCharArray();
-            String alias = "name";
+            InputStream readStream = new FileInputStream(keystorePath);
+            char[] pass_array = keystorePassword.toCharArray();
             ks.load(readStream, pass_array);
 
             // Get private key
@@ -254,12 +257,12 @@ public class JavaDB {
      *
      * @param signme the String content that is to be digitally signed
      */
-    public static void digitalSign(String signme) {
+    public static void digitalSign(String signme, String keystorePath, String keystorePassword, String alias) {
         try {
             // Setup the hashing algorithm to be used
             Signature signature = Signature.getInstance("SHA256withRSA");
             // Initialize the signature using a private key
-            signature.initSign(loadKey().getPrivate());
+            signature.initSign(loadKey(keystorePath, keystorePassword, alias).getPrivate());
 
             // Supply the data to be signed to the Signature object
             // using the update() method and generate the digital
@@ -270,7 +273,7 @@ public class JavaDB {
 
             // Save digital signature and the public key to a file (will need to save to database)
             Files.write(Paths.get("signature"), digitalSignature);
-            Files.write(Paths.get("publickey"), loadKey().getPublic().getEncoded());
+            Files.write(Paths.get("publickey"), loadKey(keystorePath, keystorePassword, alias).getPublic().getEncoded());
         } catch (IOException | InvalidKeyException | NoSuchAlgorithmException | SignatureException e) {
         }
     }
@@ -278,8 +281,7 @@ public class JavaDB {
     /**
      * Verifies if the content containing the digital signature was from the
      * user who's public key is used to decrypt the signature and that the
-     * content was not tampered with since the user signed it. NOTE: Need to add
-     * parameters for the publicKeyEncoded and digitalSignature
+     * content was not tampered with since the user signed it.
      * <p>
      * Mostly taken from here:
      * https://kodejava.org/how-to-verify-digital-signature-of-a-signed-data/
@@ -288,14 +290,8 @@ public class JavaDB {
      * @return true if the digital signature was verified, false if it was not
      * or could not be verified
      */
-    public static boolean digitalVerify(String verifyme) {
+    public static boolean digitalVerify(String verifyme, byte[] publicKeyEncoded, byte[] digitalSignature) {
         try {
-            // Will need to grab this from database instead of file
-            // Reads-in the byte array for the encoded public key
-            byte[] publicKeyEncoded = Files.readAllBytes(Paths.get("publickey"));
-            // Reads-in the byte array for the digital signature
-            byte[] digitalSignature = Files.readAllBytes(Paths.get("signature"));
-
             // Use the encouded public key to create the X509EncodedKeySpec
             X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(publicKeyEncoded);
             // Create the keyFactory that will be used to generate the public key
@@ -321,7 +317,7 @@ public class JavaDB {
                 System.out.println("Cannot verify data.");
             }
             return verified;
-        } catch (IOException | InvalidKeyException | NoSuchAlgorithmException | SignatureException | InvalidKeySpecException e) {
+        } catch (InvalidKeyException | NoSuchAlgorithmException | SignatureException | InvalidKeySpecException e) {
         }
         return false;
     }
