@@ -33,35 +33,62 @@ public class Main implements java.sql.Connection{
     Connection connection = new Connection //obviously not right...       
             
     //------------functions for database connection
-    private Connection dbConnect(String username, String password, String server)  {
+    private Connection dbConnect (String username, String password, String server)  {
+        //todo
         return connection;
     }
     
-    loadTimesheet
+    private void loadTimesheet (Connection connection, int payPeriodDate)   {
+        //todo
+    }
             
-    saveTimesheet
+    private void saveTimesheet (Connection connection)  {
+        //todo
+    } 
             
-    veriftyTimesheet  
+    private boolean veriftyTimesheet (int payPeriodDate) {
+        boolean t = false;
+    //todo
+    return t;
+    }
             
-    digitalSign 
+    private void digitalSign (int payPeriodDate) {
+        //todo
+    }
             
-    digitalVerify
+    private void digitalVerify (int payPeriodDate) {
+        //todo
+    }
     
     //-------------functions for logic
             
-    clockIn
+    private void clockIn (int payPeriodDate) {
+        //todo
+    }
             
-    clockOut
+    private void clockOut (int payPeriodDate) {
+        //todo
+    }
             
-    printDailyReport
+    private void printDailyReport (int payPeriodDate) {
+        //todo
+    }
             
-    printSummary
+    private void printSummary (int payPeriodDate) {
+        //todo
+    }
             
-    printWeeklyReport
+    private void printWeeklyReport (int payPeriodDate) {
+        //todo
+    }
             
-    printReport
+    private void printReport (int payPeriodDate) {
+        //todo
+    }
     
     //-------------functions for injecting javascript
+            
+    //something
 
     //-------------generated SQL Connection stubs
     @Override
