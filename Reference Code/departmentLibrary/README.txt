@@ -1,3 +1,13 @@
+********************************************************************************************
+I deleted all the files in this folder, because I added the new and working full program
+
+Ignore this folder. If possible someone please delete.
+
+-Elvin
+*********************************************************************************************
+
+
+
 This is just a simple program that shows how the servlet calls the javascript file. 
 
 I've annotated the files with some comments. 
