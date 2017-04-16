@@ -1,4 +1,4 @@
-package javadb;
+package etmsclient;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,7 +23,7 @@ import java.util.Properties;
  *
  * @author Justin Mullins
  */
-public class JavaDB {
+public class EtmsClient {
 
     /**
      * Main function that executes the ETMS client. Current code is for testing
