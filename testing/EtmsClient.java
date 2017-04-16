@@ -19,7 +19,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Properties;
 
 /**
- * Proof of concept code I've worked on.
+ * Employee's Time Management System
  *
  * @author Justin Mullins
  */
@@ -28,9 +28,6 @@ public class EtmsClient {
     /**
      * Main function that executes the ETMS client. Current code is for testing
      * only.
-     * <p>
-     * DB Query example from:
-     * https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-usagenotes-statements.html
      *
      * @param args
      */
