@@ -7,7 +7,8 @@ Download & install MySQL 5.7 installer, the installer will setup everthing for y
 https://dev.mysql.com/downloads/installer/
 
 Download the test certs and keys from github, or create your own.
-Set the paths in the my.ini file for both the client and server. Also make sure to change the paths in the java program, (etms.cfg, coming soon).
+Set the paths in the my.ini file for both the client (for testing/connectiong without using the application) and server. Also make sure to set the correct
+configuration settings int he etms.cfg file.
 
 Make sure your MySQL server is loading the my.ini file when it boots
 Reference: https://dev.mysql.com/doc/refman/5.7/en/windows-start-service.html
