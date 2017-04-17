@@ -57,8 +57,8 @@ CREATE TABLE IF NOT EXISTS `ETMS_Schemma`.`Employee` (
   CONSTRAINT `fk_positionID`
     FOREIGN KEY (`PositionID`)
     REFERENCES `ETMS_Schemma`.`Position` (`PositionID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB
 COMMENT = 'This Table contains all the users that will interact with the database through the user interface';
 
@@ -76,8 +76,8 @@ CREATE TABLE IF NOT EXISTS `ETMS_Schemma`.`UserTable` (
   CONSTRAINT `fk_UserTable_Employee1`
     FOREIGN KEY (`EmployeeID`)
     REFERENCES `ETMS_Schemma`.`Employee` (`EmployeeID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -93,8 +93,8 @@ CREATE TABLE IF NOT EXISTS `ETMS_Schemma`.`EmployeeType` (
   CONSTRAINT `fk_EmployeeType_Employee1`
     FOREIGN KEY (`Employee_EmployeeID`)
     REFERENCES `ETMS_Schemma`.`Employee` (`EmployeeID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -158,8 +158,8 @@ CREATE TABLE IF NOT EXISTS `ETMS_Schemma`.`HoursTable` (
   CONSTRAINT `fk_HoursTable_TimeSheet1`
     FOREIGN KEY (`TimeSheet_TimeSheetID`)
     REFERENCES `ETMS_Schemma`.`TimeSheet` (`TimeSheetID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -175,8 +175,8 @@ CREATE TABLE IF NOT EXISTS `ETMS_Schemma`.`HoursCode` (
   CONSTRAINT `fk_HoursCode_HoursTable1`
     FOREIGN KEY (`HoursTable_HoursTableID`)
     REFERENCES `ETMS_Schemma`.`HoursTable` (`HoursTableID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -192,8 +192,8 @@ CREATE TABLE IF NOT EXISTS `ETMS_Schemma`.`Leave` (
   CONSTRAINT `fk_Leave_TimeSheet1`
     FOREIGN KEY (`TimeSheet_TimeSheetID`)
     REFERENCES `ETMS_Schemma`.`TimeSheet` (`TimeSheetID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -210,8 +210,8 @@ CREATE TABLE IF NOT EXISTS `ETMS_Schemma`.`Signature` (
   CONSTRAINT `fk_Signature_TimeSheet1`
     FOREIGN KEY (`TimeSheet_TimeSheetID`)
     REFERENCES `ETMS_Schemma`.`TimeSheet` (`TimeSheetID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -227,8 +227,8 @@ CREATE TABLE IF NOT EXISTS `ETMS_Schemma`.`Department` (
   CONSTRAINT `fk_TimeSheet1`
     FOREIGN KEY (`TimeSheetID`)
     REFERENCES `ETMS_Schemma`.`TimeSheet` (`TimeSheetID`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
