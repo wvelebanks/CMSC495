@@ -1,11 +1,10 @@
 
 /** Employees Class uses all the methods specified in EmployeesInterface
  * @author Wendy Carolina Velasquez Ebanks
- * Prof. Myers
  */
 import java.text.NumberFormat;
-import java.util.ArrayList;import 
-java.util.ArrayList;
+import java.util.ArrayList;
+import java.util.ArrayList;
 
 public class Employees implements EmployeesInterface{
 
@@ -135,7 +134,6 @@ public class Employees implements EmployeesInterface{
 	 * THis Method calculate the total weekly pay for all employees in the ArrayList
 	 * @return the total weekly pay for all employees
 	 */
-	
 	public double calculateTotalWeeklyPay() {
 		// TODO Auto-generated method stub
 		double sum = 0.0;
