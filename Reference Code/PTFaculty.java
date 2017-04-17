@@ -7,8 +7,8 @@ public class PTFaculty extends Employee {
 	 private double ClassRate;
 	 private int NumClasses;
 	 NumberFormat fmt = NumberFormat.getCurrencyInstance();
-	 /**initialize the constructor for a Part Time Faculty Object
-	  * */
+	 
+	 /**initialize the constructor for a Part Time Faculty Object */
 	 public PTFaculty(String n, String ln, int empNum, double cr, int nc){
 	    	super(n, ln, empNum);
 	    	ClassRate = cr;
@@ -21,7 +21,7 @@ public class PTFaculty extends Employee {
 	    /**This Method presents the number of classes that the Part Time Faculty is teaching*/
 	    public int getNumClasses(){return NumClasses;}
 	    
-	    /**This method makes the String representation of the object*/
+	        /**This method makes the String representation of the object*/
 		public String toString(){
 			String result = "";
 			
