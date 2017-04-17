@@ -15,8 +15,7 @@ public class PTFaculty extends Employee {
 	    	NumClasses = nc;
 	    }
 	 	
-	 	/**
-	 	 * This Method presents the class rate */
+	    /** This Method presents the class rate */
 	    public double getClassRate(){return ClassRate;}
 	    
 	    /**This Method presents the number of classes that the Part Time Faculty is teaching*/
