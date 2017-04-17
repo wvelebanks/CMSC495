@@ -1,4 +1,4 @@
 This folder holds working code for the development of the Employee Time Management System.  The code here can login to the MySQL server using
-the Java client program using SQL to encrypt the conection. There is also code that allows for the digital signature of timesheets to be
+the Java client program using SSL to encrypt the conection. There is also code that allows for the digital signature of timesheets to be
 created using a users private key, and verifing the certificate using the users public key.  Currently this is writen and read to a file 
 until the database schema is ready to be used.
