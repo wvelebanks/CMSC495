@@ -38,7 +38,7 @@ public class Main implements java.sql.Connection{
         return connection;
     }
     
-    private void loadTimesheet (Connection connection, int payPeriodDate)   {
+    private void loadTimesheet (Connection connection, int payPeriod)   {
         //todo
     }
             
@@ -52,37 +52,37 @@ public class Main implements java.sql.Connection{
     return t;
     }
             
-    private void digitalSign (int payPeriodDate) {
+    private void digitalSign (int payPeriod) {
         //todo
     }
             
-    private void digitalVerify (int payPeriodDate) {
+    private void digitalVerify (int payPeriod) {
         //todo
     }
     
     //-------------functions for logic
             
-    private void clockIn (int payPeriodDate) {
+    private void clockIn (int payPeriod) {
         //todo
     }
             
-    private void clockOut (int payPeriodDate) {
+    private void clockOut (int payPeriod) {
         //todo
     }
             
-    private void printDailyReport (int payPeriodDate) {
+    private void printDailyReport (int payPeriod) {
         //todo
     }
             
-    private void printSummary (int payPeriodDate) {
+    private void printSummary (int payPeriod) {
         //todo
     }
             
-    private void printWeeklyReport (int payPeriodDate) {
+    private void printWeeklyReport (int payPeriod) {
         //todo
     }
             
-    private void printReport (int payPeriodDate) {
+    private void printReport (int payPeriod) {
         //todo
     }
     
