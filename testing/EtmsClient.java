@@ -4,18 +4,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.InvalidKeyException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.ResultSet;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Properties;
 
 /**
@@ -33,58 +31,16 @@ public class EtmsClient {
      */
     public static void main(String[] args) {
         // The database connection to be used for any querries or updates
-        Connection conn = dbConnect(loadConfig());
-        // Statement objects allow you to execute basic SQL queries
-        Statement stmt = null;
-        // ResultSet objects retrieve the results from the Statement objects
-        ResultSet rs = null;
-
-        try {
-            // Create a Statement instance
-            stmt = conn.createStatement();
-            // executeQuery(String) allows you to do a SELECT query
-            // executeUpdate(String) allows you to do a UPDATE, INSERT, or DELETE statement
-            rs = stmt.executeQuery("select user from user;");
-            // Loop through the ResultSet and print out results
-            while (rs.next()) {
-                System.out.println(rs.getString(1));
-            }
-
-            // TEST THE SIGNING AND VERIFYING FEATURES
-            // digitally sign the string "test" using the users private key from the keystore
-            digitalSign("test", "C:/Users/Justin/Desktop/mysql/test_certs_keys/user.keystore", "somepassword", "name");
-            // verify the digital signature using the users public key and the digital signature
-            digitalVerify("test", Files.readAllBytes(Paths.get("publickey")), Files.readAllBytes(Paths.get("signature")));
-            // END TEST
-
-        } catch (SQLException ex) {
-            // handle any errors
-            System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
-        } catch (IOException ex) {
-            // handle excepion
-        } finally {
-            // it is a good idea to release resources in a finally{} block
-            // in reverse-order of their creation if they are no-longer needed
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException sqlEx) {
-                }
-
-                rs = null;
-            }
-
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException sqlEx) {
-                }
-
-                stmt = null;
-            }
-        }
+        Connection conn = dbConnect(loadConfig(1));
+        // Test saving a digital signature in the database
+        // Parameters(Connection, int employeeType(1(user)|2(supervisor)), byte[] (digital signature), int signatureID)
+        // should get signatureID from GUI (should be created when a new timesheet is created)
+        // Note: currently most make sure that a row is created with a signatureId before inserting
+        saveSignature(conn, 1, digitalSign("testtest", loadConfig(2)), 1);
+        
+        // TODO: Need to create place to store public key in the database
+        // TODO: Create a function to load the public key for the user whos signature you are checking
+        //digitalVerify("testtest", Files.readAllBytes(Paths.get("publickey")), loadSignature(conn, 1, 1));
     }
 
     /**
@@ -95,9 +51,6 @@ public class EtmsClient {
      * establish a db connection
      * @return a secure Connection to a MySQL database
      */
-    /*public static Connection dbConnect(String username, String password, String server,
-            String keystorePath, String keystorePassword, String truststorePath, 
-            String truststorePassword) {*/
     public static Connection dbConnect(Properties applicationProp) {
         // the username to connect to the database with
         String username = applicationProp.getProperty("client_username");
@@ -113,6 +66,8 @@ public class EtmsClient {
         String truststorePath = applicationProp.getProperty("truststore_path");
         // the password used to protect the truststore
         String truststorePassword = applicationProp.getProperty("truststore_password");
+        // Set the database to be used
+        String database = "test";
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -122,16 +77,16 @@ public class EtmsClient {
             System.setProperty("javax.net.ssl.trustStore", truststorePath);
             System.setProperty("javax.net.ssl.trustStorePassword", truststorePassword);
         } catch (ClassNotFoundException ex) {
+            // handle any errors
         }
 
         Connection conn = null;
-        String dbURL = "jdbc:mysql://" + server + "/mysql"
+        String dbURL = "jdbc:mysql://" + server + "/" + database
                 + "?verifyServerCertificate=true"
                 + "&useSSL=true"
                 + "&requireSSL=true";
         try {
             conn = DriverManager.getConnection(dbURL, username, password);
-            //conn = DriverManager.getConnection(dbURL);
         } catch (SQLException ex) {
             // handle any errors
             System.out.println("SQLException: " + ex.getMessage());
@@ -142,17 +97,33 @@ public class EtmsClient {
     }
 
     /**
-     * Loads the "etms.cfg" file from the same path where the program is
-     * located. The etms.cfg file contains information critical to setup a
-     * secure database connection from the client to the server.
+     * Loads the "etms.cfg" or "cert.cfg" file from the same path where the
+     * program is located. The etms.cfg file contains information critical to
+     * setup a secure database connection from the client to the server, while
+     * the "cert.cfg" file contains certificate/key information necessary to
+     * sign files.
      *
+     * @param config specify if you want 1, etms.cfg, or 2, cert.cfg
      * @return a Properties stream containing the client configuration from
-     * etms.cfg
+     * etms.cfg or cert.cfg
      */
-    public static Properties loadConfig() {
+    public static Properties loadConfig(int config) {
         Properties applicationProps = new Properties();
+        String configuration = "";
 
-        try (FileInputStream in = new FileInputStream("etms.cfg")) {
+        switch (config) {
+            case 1:
+                configuration = "etms.cfg";
+                break;
+            case 2:
+                configuration = "cert.cfg";
+                break;
+            // TODO: throw some error
+            default:
+                break;
+        }
+
+        try (FileInputStream in = new FileInputStream(configuration)) {
             applicationProps.load(in);
         } catch (FileNotFoundException ex) {
             // handle exception
@@ -198,6 +169,89 @@ public class EtmsClient {
     public static boolean verifyTimesheet() {
         boolean test = false;
         return test;
+    }
+
+    /**
+     * Insert the digital signature for the users timesheet into the the
+     * Signature table.
+     *
+     * @param conn a secure connection to the database server
+     * @param employeeType set to 1 if saving the employee signature, set to 2
+     * if saving the supervisor signature.
+     * @param digitalSig the digital signature that is to be inserted into the
+     * db
+     * @param signatureId the primary key for the signature table in the etms db
+     */
+    public static void saveSignature(Connection conn, int employeeType, byte[] digitalSig, int signatureId) {
+        try {
+            String employee = null;
+
+            switch (employeeType) {
+                case 1:
+                    employee = "SignatureEmployee";
+                    break;
+                case 2:
+                    employee = "SignatureSupervisor";
+                    break;
+                /* TODO: Throw some error */
+                default:
+                    break;
+            }
+
+            String insertSignature = "UPDATE signature SET " + employee + " = ? where SignatureID = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(insertSignature)) {
+                ps.setBytes(1, digitalSig);
+                ps.setInt(2, signatureId);
+                ps.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            // handle any errors
+        }
+    }
+
+    /**
+     * Load the digital signature from the database and return it to be
+     * inspected. Identifies the signature to load based on the signatureId and
+     * employeeType passed in. Digital signatures are stored in the etms
+     * database under the signature table which has the following columns
+     * (signatureId, SignatureEmployee, and SignatureSupervisor).
+     *
+     * @param conn a secure connection to the database server
+     * @param employeeType specifies if the user is a supervisor or not (1 is
+     * non-supervisor, 2 is supervisor)
+     * @param signatureId the signature id of the row in the signature table
+     * where the signature is stored.
+     * @return the digital signature stored by the user of type employeeType in
+     * the signature table in row signatureId.
+     */
+    public static byte[] loadSignature(Connection conn, int employeeType, int signatureId) {
+        String employee = null;
+        byte[] signature = null;
+
+        switch (employeeType) {
+            case 1:
+                employee = "SignatureEmployee";
+                break;
+            case 2:
+                employee = "SignatureSupervisor";
+                break;
+            /* TODO: Throw some error */
+            default:
+                break;
+        }
+
+        String grabSignature = "SELECT " + employee + " from signature where signatureID = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(grabSignature)) {
+            ps.setInt(1, signatureId);
+            ps.execute();
+            ResultSet rs = ps.getResultSet();
+            rs.next();
+            signature = rs.getBytes(employee);
+        } catch (SQLException ex) {
+        }
+        return signature;
     }
 
     /**
@@ -288,14 +342,18 @@ public class EtmsClient {
      * https://kodejava.org/how-to-create-a-digital-signature-and-sign-data/
      *
      * @param signme the String content that is to be digitally signed
-     * @param keystorePath a String path to the keystore
-     * @param keystorePassword a String that provides the password for the
-     * keystore
-     * @param alias the user who's certificate/keys we want to pull from the
-     * keystore
+     * @param certProp a set of Properties from the "cert.cfg" file to sign data
+     * @return the digital signature of the string passed in
      */
-    public static void digitalSign(String signme, String keystorePath, String keystorePassword, String alias) {
+    public static byte[] digitalSign(String signme, Properties certProp) {
         try {
+            // the path to the keystore
+            String keystorePath = certProp.getProperty("keystore_path");
+            // the password used to protect the keystore
+            String keystorePassword = certProp.getProperty("keystore_password");
+            // the path to the truststore
+            String alias = certProp.getProperty("alias");
+
             // Setup the hashing algorithm to be used
             Signature signature = Signature.getInstance("SHA256withRSA");
             // Initialize the signature using a private key
@@ -308,11 +366,11 @@ public class EtmsClient {
             // The digital signature in byte array format
             byte[] digitalSignature = signature.sign();
 
-            // Save digital signature and the public key to a file (will need to save to database)
-            Files.write(Paths.get("signature"), digitalSignature);
-            Files.write(Paths.get("publickey"), loadKey(keystorePath, keystorePassword, alias).getPublic().getEncoded());
-        } catch (IOException | InvalidKeyException | NoSuchAlgorithmException | SignatureException e) {
+            return digitalSignature;
+        } catch (InvalidKeyException | NoSuchAlgorithmException | SignatureException e) {
+            // handle any errors
         }
+        return null;
     }
 
     /**
