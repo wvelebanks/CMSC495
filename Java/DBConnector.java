@@ -14,50 +14,27 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
-/**
- *
- * @author Ian Spooner
- */
-public class DBConnector {
-
-
-
+import javax.management.Query;
 /**
  * Employee's Time Management System
  *
  * @author Justin Mullins
  */
-public class EtmsClient {
+public class DBConnector {
 
-    /**
-     * Main function that executes the ETMS client. Current code is for testing
-     * only.
-     *
-     * @param args
-     */
-    public void main(String[] args) {
-        // The database connection to be used for any querries or updates
-        Connection conn = dbConnect(loadConfig(1));
-        // Test saving a digital signature in the database
-        // Parameters(Connection, int employeeType(1(user)|2(supervisor)), byte[] (digital signature), int signatureID)
-        // should get signatureID from GUI (should be created when a new timesheet is created)
-        // Note: currently most make sure that a row is created with a signatureId before inserting
-        saveSignature(conn, 1, digitalSign("testtest", loadConfig(2)), 1);
-        
-        // TODO: Need to create place to store public key in the database
-        // TODO: Create a function to load the public key for the user whos signature you are checking
-        //digitalVerify("testtest", Files.readAllBytes(Paths.get("publickey")), loadSignature(conn, 1, 1));
-    }
+    // The database connection to be used for any querries or updates
+    Connection conn = dbConnect();
 
     /**
      * Connects a client to a MySQL server using the Connector/J driver. Only
      * connects to the database using SSL/TLS connection.
      *
-     * @param applicationProp a set of properties from the etms.cfg file to
-     * establish a db connection
      * @return a secure Connection to a MySQL database
      */
-    public Connection dbConnect(Properties applicationProp) {
+    public static Connection dbConnect() {
+        //applicationProp a set of properties from the etms.cfg file to establish a db connection
+        //TODO - loadConfig prly shouldn't take any paramiters
+        Properties applicationProp = loadConfig(1);
         // the username to connect to the database with
         String username = applicationProp.getProperty("client_username");
         // the password to connect to the database with
@@ -78,6 +55,7 @@ public class EtmsClient {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             // The below four lines should have parameters that are read-in to set the paths and passwords
+            
             System.setProperty("javax.net.ssl.keyStore", keystorePath);
             System.setProperty("javax.net.ssl.keyStorePassword", keystorePassword);
             System.setProperty("javax.net.ssl.trustStore", truststorePath);
@@ -86,20 +64,20 @@ public class EtmsClient {
             // handle any errors
         }
 
-        Connection conn = null;
+        Connection newConn = null;
         String dbURL = "jdbc:mysql://" + server + "/" + database
                 + "?verifyServerCertificate=true"
                 + "&useSSL=true"
                 + "&requireSSL=true";
         try {
-            conn = DriverManager.getConnection(dbURL, username, password);
+            newConn = DriverManager.getConnection(dbURL, username, password);
         } catch (SQLException ex) {
             // handle any errors
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
         }
-        return conn;
+        return newConn;
     }
 
     /**
@@ -113,7 +91,7 @@ public class EtmsClient {
      * @return a Properties stream containing the client configuration from
      * etms.cfg or cert.cfg
      */
-    public Properties loadConfig(int config) {
+    public static Properties loadConfig(int config) {
         Properties applicationProps = new Properties();
         String configuration = "";
 
@@ -139,6 +117,16 @@ public class EtmsClient {
         return applicationProps;
     }
 
+    
+    public static void push (Query query)    { 
+        Query pushQuery = new Query();
+    }
+    
+    public static Query pull (Query query)    { 
+        Query pullQuery = new Query();
+        return pullQuery;
+    }
+    
     /**
      * Load a timesheet from the database based on the pay period date which is
      * passed in as a parameter. This should be able to be passed to the web GUI
@@ -426,6 +414,4 @@ public class EtmsClient {
         }
         return false;
     }
-}
-   
 }
