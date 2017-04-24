@@ -19,17 +19,18 @@
 </head>
 
 <body style="background-color: #f1f0f0;">
-	<div class="panel panel-default" style = 'background: #428bca'>
+	<div class="panel panel-default" style='background: #428bca'>
 		<h1>
-			<font color="white">Employee Time Management System</font><small ><font color="black"> sign on</font></small>
+			<font color="white">Employee Time Management System</font><small><font
+				color="black"> sign on</font></small>
 		</h1>
 	</div>
 	<form class="form-horizontal" action="TestServlet" method="post">
 		<div class="form-group">
-			<label for="inputEmail3" class="col-sm-2 control-label">Employee ID</label>
+			<label for="inputEmail3" class="col-sm-2 control-label">Username</label>
 			<div class="col-sm-4">
 				<input type="text" class="form-control" id="inputEmail3"
-					placeholder="Employee ID" name="empID">
+					placeholder="Username" name="username">
 			</div>
 		</div>
 		<div class="form-group">
@@ -40,11 +41,15 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
+			<div class="col-sm-offset-2 col-sm-4">
 				<div class="checkbox">
 					<button type="submit" name="login" class="btn btn-primary">Sign
 						in</button>
 					<label> <input type="checkbox"> Remember me </label>
+					<div style="float: right;">
+						<a href="TestServlet"><i>I forgot my password</i></a>
+					</div>
+
 				</div>
 			</div>
 		</div>
