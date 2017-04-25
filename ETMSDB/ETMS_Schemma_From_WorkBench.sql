@@ -144,8 +144,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ETMS_Schemma`.`Signature` (
   `SignatureID` INT(5) NOT NULL AUTO_INCREMENT COMMENT 'SignatureID is the Primary key for the signature Table',
-  `SignatureEmployee` VARBINARY(256) NOT NULL,
-  `SignatureSupervisor` VARBINARY(256) NOT NULL,
+  `SignatureEmployee` VARBINARY(256) NULL,
+  `SignatureSupervisor` VARBINARY(256) NULL,
   PRIMARY KEY (`SignatureID`))
 ENGINE = InnoDB;
 
