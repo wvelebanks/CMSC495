@@ -43,7 +43,7 @@ public class Helper {
      *
      * @return a String that shows the hex of a hash
      */
-    private static String bytesToHex(byte[] bytes) {
+    public static String bytesToHex(byte[] bytes) {
         StringBuilder result = new StringBuilder();
         for (byte b : bytes) {
             result.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
