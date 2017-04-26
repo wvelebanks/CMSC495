@@ -34,7 +34,7 @@ public class Login extends HttpServlet {
         // This is the paramaters that are passed FROM the javascript page when
         // the user enters their information
         String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        String password = Helper.bytesToHex(Helper.hashString(request.getParameter("password")));
 
         // This is where the query needs to be, to check against the database
         // This portion will need to be modified
