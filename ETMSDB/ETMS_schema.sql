@@ -212,7 +212,7 @@ DROP TABLE IF EXISTS `usertable`;
 CREATE TABLE `usertable` (
   `UserID` int(11) NOT NULL AUTO_INCREMENT,
   `UserName` varchar(45) NOT NULL,
-  `UserPassWord` varchar(45) NOT NULL,
+  `UserPassWord` CHAR(64) NOT NULL,
   `EmployeeID` int(11) NOT NULL,
   PRIMARY KEY (`UserID`,`EmployeeID`),
   KEY `fk_UserTable_Employee1_idx` (`EmployeeID`),
