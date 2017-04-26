@@ -1,1 +1,11 @@
 This is a combination of the GUI/Web stuff Elvin was working on and the Java/DB stuff Justin was working on.
+
+Other files required for testing can be grabbed from the CMSC495/testing/ directory.
+You will need:
+Apache Taglibs Libraries
+Certificates and keys
+etms.cfg
+cert.cfg
+A my.ini file setup to utilize ssl keys
+
+The ETMS database is also required
