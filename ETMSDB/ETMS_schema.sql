@@ -41,7 +41,7 @@ DROP TABLE IF EXISTS `employee`;
 CREATE TABLE `employee` (
   `EmployeeID` int(5) NOT NULL AUTO_INCREMENT,
   `FirstName` varchar(45) NOT NULL,
-  `MiddleName` varchar(45) NOT NULL,
+  `MiddleName` varchar(45) DEFAULT NULL,
   `LastName` varchar(45) NOT NULL,
   `SSN` varchar(11) NOT NULL,
   `Birthdate` date NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE `employee` (
   `State` varchar(2) NOT NULL,
   `ZipCode` varchar(10) NOT NULL,
   `Phone` varchar(12) NOT NULL,
-  `Email` varchar(45) NOT NULL,
+  `Email` varchar(45) DEFAULT NULL,
   `PositionID` int(5) NOT NULL,
   `EmployeeTypeID` int(5) NOT NULL,
   PRIMARY KEY (`EmployeeID`),
