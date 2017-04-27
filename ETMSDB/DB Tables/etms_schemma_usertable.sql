@@ -23,10 +23,10 @@ DROP TABLE IF EXISTS `usertable`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `usertable` (
-  `UserID` int(11) NOT NULL AUTO_INCREMENT,
+  `UserID` int(5) NOT NULL AUTO_INCREMENT,
   `UserName` varchar(45) NOT NULL,
-  `UserPassWord` varchar(45) NOT NULL,
-  `EmployeeID` int(11) NOT NULL,
+  `UserPassWord` Char(64) NOT NULL,
+  `EmployeeID` int(5) NOT NULL,
   PRIMARY KEY (`UserID`,`EmployeeID`),
   KEY `fk_UserTable_Employee1_idx` (`EmployeeID`),
   CONSTRAINT `fk_UserTable_Employee1` FOREIGN KEY (`EmployeeID`) REFERENCES `employee` (`EmployeeID`) ON DELETE NO ACTION ON UPDATE NO ACTION
