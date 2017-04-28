@@ -131,4 +131,61 @@ public class DatabaseAccess {
         }
         return signature;
     }
+    /* addUser Function in testing
+        public static void addUser(Connection conn, CurrentUser user, Employee emp, String username, String password) {
+        // Check if current user is admin (positionID 1)
+        if (user.getPosition() == 1) {
+            try {
+                String insertEmployee = "INSERT INTO `employee` (`FirstName`,`MiddleName`,`LastName`,`SSN`,`Birthdate`,`StreetNumber`,`City`,`State`,`ZipCode`,`Phone`,`Email`,`PositionID`,`EmployeeTypeID`) "
+                        + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                
+                String insertUser = "INSERT INTO usertable (`UserName`,`UserPassWord`,`EmployeeID`) "
+                        + "VALUES (?,SHA2(?,256),?)";
+                
+                String getEmpID = "SELECT EmployeeID FROM 'employee' WHERE SSN = ?";
+                
+                try (PreparedStatement ps = conn.prepareStatement(insertEmployee)) {
+                    ps.setString(1, emp.getFirstName());
+                    ps.setString(2, emp.getMiddleName());
+                    ps.setString(3, emp.getLastName());
+                    ps.setString(4, emp.getSSN());
+                    ps.setDate(5, emp.getBirthDate());
+                    ps.setString(6, emp.getStreet());
+                    ps.setString(7, emp.getCity());
+                    ps.setString(8, emp.getState());
+                    ps.setString(9, emp.getZip());
+                    ps.setString(10, emp.getPhone());
+                    ps.setString(11, emp.getEmail());
+                    ps.setInt(12, emp.getPosition());
+                    ps.setInt(13, emp.getEmployeeType());
+                    
+                    ps.executeUpdate();
+                } catch (SQLException ex) {
+                    // handle exception
+                }
+                
+                PreparedStatement empID = conn.prepareStatement(getEmpID);
+                empID.setString(1, emp.getSSN());
+                ResultSet rs1 = empID.executeQuery();
+                rs1.next();
+                int employeeID = rs1.getInt("employee.EmployeeID");
+                System.out.println(employeeID);
+                
+                try (PreparedStatement ps = conn.prepareStatement(insertUser)) {
+                    ps.setString(1, username);
+                    ps.setString(2, password);
+                    ps.setInt(3, employeeID);
+                } catch (SQLException ex) {
+                    // handle exception
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(DatabaseAccess.class.getName()).log(Level.SEVERE, null, ex);
+                // handle exception
+            }
+
+        } else {
+            // Some Alert Log
+        }
+    } */
 }
