@@ -60,16 +60,16 @@ public class DatabaseAccess {
      * db
      * @param signatureId the primary key for the signature table in the etms db
      */
-    public static void saveSignature(Connection conn, int employeeType, byte[] digitalSig, int signatureId) {
+    public static void saveSignature(Connection conn, int positionID, byte[] digitalSig, int signatureId) {
         try {
             String employee = null;
 
-            switch (employeeType) {
-                case 1:
-                    employee = "SignatureEmployee";
-                    break;
+            switch (positionID) {
                 case 2:
                     employee = "SignatureSupervisor";
+                    break;
+                case 3:
+                    employee = "SignatureEmployee";
                     break;
                 /* TODO: Throw some error */
                 default:
@@ -103,21 +103,21 @@ public class DatabaseAccess {
      * @return the digital signature stored by the user of type employeeType in
      * the signature table in row signatureId.
      */
-    public static byte[] loadSignature(Connection conn, int employeeType, int signatureId) {
+    public static byte[] loadSignature(Connection conn, int positionID, int signatureId) {
         String employee = null;
         byte[] signature = null;
 
-        switch (employeeType) {
-            case 1:
-                employee = "SignatureEmployee";
-                break;
-            case 2:
-                employee = "SignatureSupervisor";
-                break;
-            /* TODO: Throw some error */
-            default:
-                break;
-        }
+            switch (positionID) {
+                case 2:
+                    employee = "SignatureSupervisor";
+                    break;
+                case 3:
+                    employee = "SignatureEmployee";
+                    break;
+                /* TODO: Throw some error */
+                default:
+                    break;
+            }
 
         String grabSignature = "SELECT " + employee + " from signature where signatureID = ?";
 
