@@ -230,3 +230,8 @@ CREATE TABLE `usertable` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2017-04-25 22:28:14
+-- Create Default Admin account
+INSERT INTO `position` VALUES (1,'ADMIN','Administrator'),(2,'SUP','Supervisor'),(3,'SUB','Non-Supervisory');
+INSERT INTO `employeetype` VALUES (1,'Full Time'),(2,'Part Time');
+INSERT INTO `employee` VALUES (1,'Joe',null,'Schmo','123-45-6789','2017-04-27','1111','Admin','MD','20876','222-333-4455',null,1,1);
+INSERT INTO etms_schemma.usertable VALUES (1,'admin',SHA2('ETMS@dmin123',256),1);
