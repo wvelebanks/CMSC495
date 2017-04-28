@@ -46,8 +46,8 @@ public class Login extends HttpServlet {
 
         try {
             // query string
-            query = "SELECT user.EmployeeID FROM user WHERE user.UserName = ?"
-                    + " AND user.UserPassWord = ?";
+            query = "SELECT usertable.EmployeeID FROM usertable WHERE usertable.UserName = ?"
+                    + " AND usertable.UserPassWord = ?";
 
             // run the query as a statement
             PreparedStatement pstmt = conn.prepareStatement(query);
@@ -64,10 +64,10 @@ public class Login extends HttpServlet {
             if (rs.next()) {
                 // create a new session attribute called "employeeID" and set it
                 // to the EmployeeID from the table
-                request.getSession().setAttribute("employeeID", rs.getInt("user.EmployeeID"));
+                request.getSession().setAttribute("employeeID", rs.getInt("usertable.EmployeeID"));
                 response.sendRedirect("TestVerify");
             } else {
-                response.sendRedirect("Login");
+                response.sendRedirect("Login.jsp");
             }
 
         } catch (SQLException e) {

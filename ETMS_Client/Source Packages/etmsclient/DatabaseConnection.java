@@ -36,12 +36,12 @@ public class DatabaseConnection {
         // the password used to protect the truststore
         String truststorePassword = applicationProp.getProperty("truststore_password");
         // Set the database to be used
-        String database = "test";
+        String database = "etms_schemma";
         
    
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver");
             // The below four lines should have parameters that are read-in to set the paths and passwords
             System.setProperty("javax.net.ssl.keyStore", keystorePath);
             System.setProperty("javax.net.ssl.keyStorePassword", keystorePassword);
@@ -54,8 +54,9 @@ public class DatabaseConnection {
         Connection conn = null;
         String dbURL = "jdbc:mysql://" + server + "/" + database
                 + "?verifyServerCertificate=true"
-                + "&useSSL=true"
-                + "&requireSSL=true";
+                + "&useSSL=false"
+                + "&requireSSL=false"
+                ;
         try {
             conn = DriverManager.getConnection(dbURL, username, password);
         } catch (SQLException ex) {

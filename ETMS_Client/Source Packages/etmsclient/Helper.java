@@ -69,10 +69,10 @@ public class Helper {
         // Figure out where to store files so we don't have to include the absolute path
         switch (config) {
             case 1:
-                configuration = "D:\\Documents\\NetBeansProjects\\ETMS_Client\\etms.cfg";
+                configuration = "/Users/Spikes/Dropbox/School/CMSC495-/CMSC495/testing/etms.cfg";
                 break;
             case 2:
-                configuration = "D:\\Documents\\NetBeansProjects\\ETMS_Client\\cert.cfg";
+                configuration = "/Users/Spikes/Dropbox/School/CMSC495-/CMSC495/testing/cert.cfg";
                 break;
             // TODO: throw some error
             default:
