@@ -142,7 +142,7 @@ DROP TABLE IF EXISTS `schedule`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `schedule` (
-  `ScheduleID` int(11) NOT NULL AUTO_INCREMENT,
+  `ScheduleID` int(5) NOT NULL AUTO_INCREMENT,
   `ScheduleName` varchar(45) NOT NULL,
   PRIMARY KEY (`ScheduleID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
