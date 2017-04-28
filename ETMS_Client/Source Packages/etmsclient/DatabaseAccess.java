@@ -131,8 +131,11 @@ public class DatabaseAccess {
         }
         return signature;
     }
-    /* addUser Function in testing
-        public static void addUser(Connection conn, CurrentUser user, Employee emp, String username, String password) {
+    
+   /**
+    * Need to add proper comments (adds a user to the employee, and user tables) MUST BE ADMIN
+    */
+       public static void addUser(Connection conn, CurrentUser user, Employee emp, String username, String password) {
         // Check if current user is admin (positionID 1)
         if (user.getPosition() == 1) {
             try {
@@ -142,7 +145,7 @@ public class DatabaseAccess {
                 String insertUser = "INSERT INTO usertable (`UserName`,`UserPassWord`,`EmployeeID`) "
                         + "VALUES (?,SHA2(?,256),?)";
                 
-                String getEmpID = "SELECT EmployeeID FROM 'employee' WHERE SSN = ?";
+                String getEmpID = "SELECT EmployeeID FROM employee WHERE SSN = ?";
                 
                 try (PreparedStatement ps = conn.prepareStatement(insertEmployee)) {
                     ps.setString(1, emp.getFirstName());
@@ -175,17 +178,17 @@ public class DatabaseAccess {
                     ps.setString(1, username);
                     ps.setString(2, password);
                     ps.setInt(3, employeeID);
+                    ps.executeUpdate();
                 } catch (SQLException ex) {
                     // handle exception
                 }
                 
             } catch (SQLException ex) {
-                Logger.getLogger(DatabaseAccess.class.getName()).log(Level.SEVERE, null, ex);
                 // handle exception
             }
 
         } else {
             // Some Alert Log
         }
-    } */
+    }
 }
