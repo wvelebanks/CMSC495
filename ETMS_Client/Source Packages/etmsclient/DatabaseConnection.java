@@ -36,7 +36,7 @@ public class DatabaseConnection {
         // the password used to protect the truststore
         String truststorePassword = applicationProp.getProperty("truststore_password");
         // Set the database to be used
-        String database = "test";
+        String database = "etms_schemma";
         
    
 
