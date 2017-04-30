@@ -3,7 +3,8 @@ This is a combination of the GUI/Web stuff Elvin was working on and the Java/DB 
 Other files required for testing can be grabbed from the CMSC495/testing/ directory.
 You will need:
 Apache Taglibs Libraries
-Certificates and keys
+Certificates and keys (for DB, and Apache)
+Apache server.xml (update line for keystore path for your system)
 etms.cfg
 cert.cfg
 A my.ini file setup to utilize ssl keys
