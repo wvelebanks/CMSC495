@@ -77,7 +77,7 @@
     -->
 <Connector SSLEnabled="true" acceptCount="100" clientAuth="false"
     disableUploadTimeout="true" enableLookups="false" maxThreads="25"
-    port="8443" keystoreFile="C:/Users/Justin/Desktop/mysql/test_certs_keys/apache/apache.keystore " keystorePass="apachepassword"
+    port="8443" keystoreFile="C:/Users/Test/Desktop/mysql/test_certs_keys/apache/apache.keystore " keystorePass="apachepassword"
     protocol="org.apache.coyote.http11.Http11NioProtocol" scheme="https"
     secure="true" />
     
