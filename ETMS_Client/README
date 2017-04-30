@@ -5,6 +5,7 @@ You will need:
 Apache Taglibs Libraries
 Certificates and keys (for DB, and Apache)
 Apache server.xml (update line for keystore path for your system)
+NOTE: you can change web.xml from CONFIDENTIAL to NONE if you are not using HTTPS
 etms.cfg
 cert.cfg
 A my.ini file setup to utilize ssl keys
