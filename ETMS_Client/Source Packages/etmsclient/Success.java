@@ -17,7 +17,7 @@ public class Success extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
 		String u = (String) request.getSession().getAttribute("employeeID");
-		System.out.println("You are logged in with userID: " + u);
+		System.out.println("You are clocked in with userID: " + u);
 		//post string to page
 		String success = "the action completed successfully!";
 	}	
