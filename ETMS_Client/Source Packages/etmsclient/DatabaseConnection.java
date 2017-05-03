@@ -6,7 +6,8 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * Employee's Time Management System
+ * The DatabaseConnection class sets up the connection between the Java Client
+ * and the ETMS database.
  *
  * @author Justin Mullins
  */
