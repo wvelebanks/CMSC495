@@ -6,8 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- *
- * @author Justin
+ * The DatabaseAccess class contains functions that will be used to either read
+ * from or write to the ETMS database.
+ * 
+ * @author Justin Mullins
  */
 public class DatabaseAccess {
 
@@ -132,9 +134,16 @@ public class DatabaseAccess {
         return signature;
     }
     
-   /**
-    * Need to add proper comments (adds a user to the employee, and user tables) MUST BE ADMIN
-    */
+    /**
+     * Add a new user to the ETMS database, this can only be done by an administrative
+     * user (PositionID==1).
+     * 
+     * @param conn - the Connection to the ETMS database
+     * @param user - a CurrentUser object
+     * @param emp - a new Employee object
+     * @param username - the new user's username
+     * @param password - the new user's password
+     */
        public static void addUser(Connection conn, CurrentUser user, Employee emp, String username, String password) {
         // Check if current user is admin (positionID 1)
         if (user.getPosition() == 1) {
