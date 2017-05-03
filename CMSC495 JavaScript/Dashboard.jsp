@@ -48,7 +48,7 @@
 </style>
 </head>
 
-<body style="background-color: #f1f0f0;">
+<body style="background-color: #ebeef4;">
 
 
 
@@ -60,9 +60,9 @@
 				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
 				aria-expanded="false"></button>
 			<a class="navbar-brand" href="#"><font color="white">ETMS</font></a>
-			
+
 			<button type="button" class="btn btn-default navbar-btn"
-				onclick="window.location.href='?db=timesheet'">Time Sheet</button>
+				onclick="window.location.href='?db=timesheet'">My Timesheet</button>
 			<button type="button" class="btn btn-default navbar-btn"
 				onclick="window.location.href='?db=account'">Account</button>
 			<button type="button" class="btn btn-default navbar-btn"
@@ -232,15 +232,13 @@
 								<div class="form-group">
 									<label class="col-md-3 control-label">Password:</label>
 									<div class="col-md-8">
-										<input class="form-control" value=""
-											type="password">
+										<input class="form-control" value="" type="password">
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-md-3 control-label">Confirm password:</label>
 									<div class="col-md-8">
-										<input class="form-control" value=""
-											type="password">
+										<input class="form-control" value="" type="password">
 									</div>
 								</div>
 								<div class="form-group">
@@ -262,13 +260,93 @@
 
 	<!-- Time Sheet -->
 	<div id="timesheet" class="dynamic-content">
-		<div class="container" style='background: #ffffff'>
+		<div class="container">
+			<h1 align="center">My Timesheet</h1>
 			<div class="row">
-				<div class="col-md-10 col-md-offset-1" style='background: #d8d8d8'>
+				<div class="panel">
+					<div class="pre-scrollable" style="max-height: 90vh; height: 70vh">
+						<div class="table">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Date In</th>
+										<th>Time In</th>
+										<th>Date Out</th>
+										<th>Time Out</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>1</td>
+										<td>4/30/2017</td>
+										<td>6:30am</td>
+										<td>5/1/2017</td>
+										<td>5:00pm</td>
+										<td><button type="button" class="btn btn-danger">
+												<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+												Delete
+											</button></td>
+									</tr>
+									<tr>
+										<td>2</td>
+										<td>5/1/2017</td>
+										<td>6:30am</td>
+										<td>5/1/2017</td>
+										<td>5:00pm</td>
+										<td><button type="button" class="btn btn-danger">
+												<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+												Delete
+											</button></td>
+									</tr>
+									<tr>
+										<td>3</td>
+										<td>5/2/2017</td>
+										<td>6:30am</td>
+										<td>-</td>
+										<td>-</td>
+										<td>
+											<button type="button" class="btn btn-warning">
+												<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+												Clock Out
+											</button>
+										</td>
+									</tr>
 
-					<p>Time Sheet Page</p>
-
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</div>
+				<div class="container">
+
+					<div class="row">
+						<div class="col-md-3">
+							<button type="button" class="btn btn-primary btn-lg btn-block"
+								style="margin-bottom: 5px;">Submit Timesheet</button>
+						</div>
+						<div class="col-md-4">
+							<label class="col-md-4 control-label"><h4>
+									<b>Submission:</b>
+								</h4></label>
+							<div class="col-md-5">
+								<input class="form-control" value="Not Submitted" type="text"
+									disabled>
+							</div>
+						</div>
+
+						<div class="col-md-4 ">
+							<label class="col-md-3 control-label"><h4>
+									<b>Status:</b>
+								</h4></label>
+							<div class="col-md-5">
+								<input class="form-control" value="Pending" type="text" disabled>
+							</div>
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -285,10 +363,43 @@
 					<!-- left column -->
 
 					<div class="col-md-4">
-						<h3>User Actions</h3>
+						<h3 align="center">User Actions</h3>
+						<h4 align="center">Selected Employee</h4>
 						<div class="panel panel-default">
-							<div class="text-center"></div>
+							<br></br> <label class="col-lg-3 control-label">F. Name:</label>
+							<div class="col-lg-8">
+								<input class="form-control" value="John" type="text" disabled>
+							</div>
+							<br></br> <label class="col-lg-3 control-label">L. Name:</label>
+							<div class="col-lg-8">
+								<input class="form-control" value="Doe" type="text" disabled>
+							</div>
+							<br></br> <label class="col-lg-3 control-label">E. ID:</label>
+							<div class="col-lg-8">
+								<input class="form-control" value="123" type="text" disabled>
+							</div>
+							<br></br> <label class="col-lg-3 control-label">Status:</label>
+							<div class="col-lg-8">
+								<input class="form-control" value="Pending" type="text" disabled>
+							</div>
+							<br></br> <br></br>
 						</div>
+
+						<div class="col-md-12 text-center">
+							<button type="button" class="btn btn-primary btn-lg btn-block"
+								style="margin-bottom: 5px;">View Timesheet</button>
+						</div>
+						<br></br>
+						<div class="col-md-12 text-center">
+							<button type="button" class="btn btn-success btn-lg btn-block"
+								style="margin-bottom: 5px;">Approve Timesheet</button>
+						</div>
+						<br></br>
+						<div class="col-md-12 text-center">
+							<button type="button" class="btn btn-danger btn-lg btn-block">Reject
+								Timesheet</button>
+						</div>
+
 					</div>
 
 					<!-- Right form column -->
@@ -300,6 +411,7 @@
 						<div class="row">
 							<div class="col-sm-6 col-sm-offset-3">
 								<div id="imaginary_container">
+
 									<div class="input-group stylish-input-group">
 										<input type="text" class="form-control" placeholder="Search">
 											<span class="input-group-addon">
@@ -308,14 +420,16 @@
 												</button>
 										</span>
 									</div>
+
 								</div>
 							</div>
 						</div>
 
 
 						<div class="panel">
-							<div class="pre-scrollable" style="max-height: 60vh;">
-								<div class="bs-example">
+							<div class="pre-scrollable"
+								style="max-height: 60vh; height: 70vh">
+								<div class="table">
 									<table class="table table-hover">
 										<thead>
 											<tr>
@@ -325,6 +439,7 @@
 												<th>Email</th>
 												<th>Submission</th>
 												<th>TS Status</th>
+												<th>View</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -335,6 +450,7 @@
 												<td>johncarter@mail.com</td>
 												<td>Not Submitted</td>
 												<td>Pending</td>
+												<td><a href="#">View</a></td>
 											</tr>
 											<tr>
 												<td>2</td>
@@ -343,6 +459,7 @@
 												<td>peterparker@mail.com</td>
 												<td>Submitted</td>
 												<td>Denied</td>
+												<td><a href="#">View</a></td>
 											</tr>
 											<tr>
 												<td>3</td>
@@ -351,6 +468,7 @@
 												<td>johnrambo@mail.com</td>
 												<td>Submitted</td>
 												<td>Pending</td>
+												<td><a href="#">View</a></td>
 											</tr>
 											<tr>
 												<td>4</td>
@@ -359,79 +477,9 @@
 												<td>jDoe@mail.com</td>
 												<td>Submitted</td>
 												<td>Approved</td>
+												<td><a href="#">View</a></td>
 											</tr>
-											<tr>
-												<td>4</td>
-												<td>Billy</td>
-												<td>Doe</td>
-												<td>jDoe@mail.com</td>
-												<td>Submitted</td>
-												<td>Approved</td>
-											</tr>
-											<tr>
-												<td>4</td>
-												<td>Billy</td>
-												<td>Doe</td>
-												<td>jDoe@mail.com</td>
-												<td>Submitted</td>
-												<td>Approved</td>
-											</tr>
-											<tr>
-												<td>4</td>
-												<td>Billy</td>
-												<td>Doe</td>
-												<td>jDoe@mail.com</td>
-												<td>Submitted</td>
-												<td>Approved</td>
-											</tr>
-											<tr>
-												<td>4</td>
-												<td>Billy</td>
-												<td>Doe</td>
-												<td>jDoe@mail.com</td>
-												<td>Submitted</td>
-												<td>Approved</td>
-											</tr>
-											<tr>
-												<td>4</td>
-												<td>Billy</td>
-												<td>Doe</td>
-												<td>jDoe@mail.com</td>
-												<td>Submitted</td>
-												<td>Approved</td>
-											</tr>
-											<tr>
-												<td>4</td>
-												<td>Billy</td>
-												<td>Doe</td>
-												<td>jDoe@mail.com</td>
-												<td>Submitted</td>
-												<td>Approved</td>
-											</tr>
-											<tr>
-												<td>4</td>
-												<td>Billy</td>
-												<td>Doe</td>
-												<td>jDoe@mail.com</td>
-												<td>Submitted</td>
-												<td>Approved</td>
-											</tr>
-											<tr>
-												<td>4</td>
-												<td>Billy</td>
-												<td>Doe</td>
-												<td>jDoe@mail.com</td>
-												<td>Submitted</td>
-												<td>Approved</td>
-											</tr>
-											<tr>
-												<td>4</td>
-												<td>Billy</td>
-												<td>Doe</td>
-												<td>jDoe@mail.com</td>
-												<td>Submitted</td>
-												<td>Approved</td>
-											</tr>
+
 										</tbody>
 									</table>
 								</div>
