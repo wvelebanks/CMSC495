@@ -136,23 +136,27 @@ public class DatabaseAccess {
     
     /**
      * Add a new user to the ETMS database, this can only be done by an administrative
-     * user (PositionID==1).
+     * user (PositionID==1).  Admin should update cert.cfg to contain the keystore, password
+     * and alias for the users public key.
      * 
      * @param conn - the Connection to the ETMS database
      * @param user - a CurrentUser object
      * @param emp - a new Employee object
      * @param username - the new user's username
-     * @param password - the new user's password
+     * @param passHash - the new user's hashed password
      */
-       public static void addUser(Connection conn, CurrentUser user, Employee emp, String username, String password) {
+    public static void addUser(Connection conn, CurrentUser user, Employee emp, String username, String passHash) {
         // Check if current user is admin (positionID 1)
         if (user.getPosition() == 1) {
             try {
                 String insertEmployee = "INSERT INTO `employee` (`FirstName`,`MiddleName`,`LastName`,`SSN`,`Birthdate`,`StreetNumber`,`City`,`State`,`ZipCode`,`Phone`,`Email`,`PositionID`,`EmployeeTypeID`) "
                         + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 
-                String insertUser = "INSERT INTO usertable (`UserName`,`UserPassWord`,`EmployeeID`) "
-                        + "VALUES (?,SHA2(?,256),?)";
+                Properties certprop = Helper.loadConfig(2);
+                byte[] pubEncodKey = Helper.loadKey(certprop.getProperty("keystore_path"), certprop.getProperty("keystore_password"), certprop.getProperty("alias")).getPublic().getEncoded();
+                
+                String insertUser = "INSERT INTO `usertable` (`UserName`,`UserPassWord`,`EmployeeID`, `UserPublicKey`) "
+                        + "VALUES (?,?,?,?)";
                 
                 String getEmpID = "SELECT EmployeeID FROM employee WHERE SSN = ?";
                 
@@ -187,6 +191,7 @@ public class DatabaseAccess {
                     ps.setString(1, username);
                     ps.setString(2, password);
                     ps.setInt(3, employeeID);
+                    ps.setBytes(4, pubEncodKey);
                     ps.executeUpdate();
                 } catch (SQLException ex) {
                     // handle exception
