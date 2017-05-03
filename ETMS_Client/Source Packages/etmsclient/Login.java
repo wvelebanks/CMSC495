@@ -65,7 +65,7 @@ public class Login extends HttpServlet {
                 // create a new session attribute called "employeeID" and set it
                 // to the EmployeeID from the table
                 request.getSession().setAttribute("employeeID", rs.getInt("usertable.EmployeeID"));
-                response.sendRedirect("TestVerify");
+                response.sendRedirect("DashboardServlet");
             } else {
                 response.sendRedirect("Login");
             }
