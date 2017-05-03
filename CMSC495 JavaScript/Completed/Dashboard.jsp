@@ -107,7 +107,9 @@
 				</div>
 				<!-- edit form column -->
 				<div class="container">
+				
 					<div class="pre-scrollable" style="max-height: 70vh;">
+					<div class="panel panel-default">
 						<div class="container-fluid">
 							<form class="form-horizontal" role="form">
 								<div class="form-group">
@@ -251,6 +253,7 @@
 								</div>
 							</form>
 						</div>
+					</div>
 					</div>
 				</div>
 			</div>
@@ -426,7 +429,7 @@
 						</div>
 
 
-						<div class="panel">
+						<div class="panel panel-default">
 							<div class="pre-scrollable"
 								style="max-height: 60vh; height: 70vh">
 								<div class="table">
