@@ -13,8 +13,11 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Properties;
 
 /**
- *
- * @author Justin
+ * The DigitalSignature class can be used to digitally sign a String, in this
+ * case it will be a String representing an employee's timesheet.  It can also
+ * be used to verify a digital signature.
+ * 
+ * @author Justin Mullins
  */
 public class DigitalSignature {
 
