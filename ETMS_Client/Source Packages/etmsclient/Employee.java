@@ -22,6 +22,26 @@ public class Employee {
     int employeeTypeID;
 
     /**
+     * Default Constructor: create empty Employee object
+     */
+    public Employee() {
+        employeeID = -1;
+        firstName = "";
+        middleName = "";
+        lastName = "";
+        ssn = "";
+        birthdate = Date.valueOf("1776-07-04");
+        street = "";
+        city = "";
+        state = "";
+        zipC = "";
+        phone = "";
+        email = "";
+        positionID = -1;
+        employeeTypeID = -1;
+    }
+    
+    /**
      * This constructor is for reading in and storing an existing employees
      * information from the database.
      *
