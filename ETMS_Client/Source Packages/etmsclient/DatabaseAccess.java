@@ -189,7 +189,7 @@ public class DatabaseAccess {
                 
                 try (PreparedStatement ps = conn.prepareStatement(insertUser)) {
                     ps.setString(1, username);
-                    ps.setString(2, password);
+                    ps.setString(2, passHash);
                     ps.setInt(3, employeeID);
                     ps.setBytes(4, pubEncodKey);
                     ps.executeUpdate();
