@@ -289,7 +289,7 @@
 										<td>5:00pm</td>
 										<td><button type="button" class="btn btn-danger">
 												<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-												Delete
+												Flag
 											</button></td>
 									</tr>
 									<tr>
@@ -300,7 +300,7 @@
 										<td>5:00pm</td>
 										<td><button type="button" class="btn btn-danger">
 												<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-												Delete
+												Flag
 											</button></td>
 									</tr>
 									<tr>
