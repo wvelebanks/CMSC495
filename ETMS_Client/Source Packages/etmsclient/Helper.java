@@ -17,11 +17,18 @@ import java.security.cert.CertificateException;
 import java.util.Properties;
 
 /**
- *
- * @author Justin
+ * The Helper class contains functions that may be useful throughout the ETMS
+ * Client program such as hashing, loading configurations, or loading keys.
+ * 
+ * @author Justin Mullins
  */
 public class Helper {
-
+    /**
+     * Returns a byte array which represents a SHA256 hash of a String
+     * 
+     * @param timesheetString - a String to be hashed
+     * @return a byte array which represents a SHA256 hash of a String
+     */
     public static byte[] hashString(String timesheetString) {
         byte[] thehash = null;
         try {
