@@ -65,6 +65,29 @@ public class Dashboard extends HttpServlet {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
+        if (request.getParameter("Clockout") != null) {
+            //send request to be clockes out to ClockOut.java
+            //ClockOut;
+        } 
+        else if (request.getParameter("Logout") != null) {
+            //clear the sesson values in CurrentUser.java
+            CurrentUser.clear();
+        } 
+        else if (request.getParameter("SaveChanges") != null) {
+            //add new user info
+        } 
+        else if (request.getParameter("CancelChanges") != null) {
+            //pretty much do nothing, maybe should reset the form.
+        } 
+        else if (request.getParameter("Flag") != null) {
+            //pretty much do nothing also. this one should maybe email somebody?
+        } 
+        else if (request.getParameter("SubmitTimesheet") != null) {
+            //just sets the submitted bool, checks that it came back ok, then:
+            StringBuilder SubmittedBool = new StringBuilder();
+            SubmittedBool.append("Submitted!");
+        } 
+        else {}
     }
 
     @Override
