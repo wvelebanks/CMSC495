@@ -14,9 +14,15 @@ import java.util.Arrays;
  */
 public class CurrentUser {
 
-    int user;
-    int position;
-    int[] employees;
+   public static void clear() {
+        user = -1;
+        position = -1;
+        employees = null;
+    }
+
+    static int user;
+    static int position;
+    static int[] employees;
 
     /**
      * This Constructor is for non-supervisory PositionIDs.
