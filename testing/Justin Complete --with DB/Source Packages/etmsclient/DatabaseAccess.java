@@ -136,6 +136,29 @@ public class DatabaseAccess {
     }
 
     /**
+     * Load the user's public encoded key from the database and return it.
+     * Identifies the public key to load based on the employeeID and
+     * passed in. Public keys are stored in the etms database under the usertable.
+     * 
+     * @param conn a secure connection to the database server
+     * @param employeeID the employee's ID who;s public key you are requesting 
+     * @return 
+     */
+    public static byte[] loadPubKey(Connection conn, int employeeID) {
+        String grabSignature = "SELECT UserPublicKey FROM etms_schemma.usertable WHERE EmployeeID = ?";
+        byte[] pubEncodKey = null;
+        try (PreparedStatement ps = conn.prepareStatement(grabSignature)) {
+            ps.setInt(1, employeeID);
+            ps.execute();
+            ResultSet rs = ps.getResultSet();
+            rs.next();
+            pubEncodKey = rs.getBytes("UserPublicKey");
+        } catch (SQLException ex) {
+        }
+        return pubEncodKey;
+    }
+    
+    /**
      * Add a new user to the ETMS database, this can only be done by an administrative
      * user (PositionID==1).
      * 
