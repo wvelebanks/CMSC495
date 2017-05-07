@@ -5,6 +5,8 @@ import java.sql.Date;
 /**
  *
  * @author Ian
+ * This is an object class for loading the components of a timesheet from the DB.
+ * Several consturctors are given, based on the view needed
  */
 public class Timesheet {
 
@@ -23,8 +25,15 @@ public class Timesheet {
     int SignatureID;
     int HoursTableID;
 
+    //Default constructor, no params, no args
     public Timesheet() {}
 
+    //initial load constructor, just basic sheet data, no actual times. 
+    //@params TimeSheetID an int of a date from the database
+    //@params StartDate a date object from the database
+    //@params PayPeriod an int of a date from the database
+    //@params HoursTableID an int of id number from the database
+    //@params testingDate a date object NOT from the database for internal testing
     public Timesheet(int TimeSheetID, Date StartDate, int PayPeriod, int HoursTableID, Date testingDate) {
       TimeSheetID = 0;
       StartDate = testingDate;
@@ -32,6 +41,15 @@ public class Timesheet {
       HoursTableID = 0;
     }
 
+    //constructs a full timesheet object for retrival.
+    //@params TimeSheetID an int of a date from the database
+    //@params StartDate a date object from the database
+    //@params PayPeriod an int of a date from the database
+    //@params HoursTableID an int of id number from the database
+    //@params testingDate a date object NOT from the database for internal testing
+    //@params TimeIn, TimeOut, DateSubmitted, Approval, Notes, Schedule_ScheduleID, EmployeeID, 
+    // LeaveID, DepartmentID,SignatureID, HoursTableID are all straight from the database
+    //@params testingDate a date object NOT from the database for internal testing
     public Timesheet(int TimeSheetID, Date StartDate, int PayPeriod, Date TimeIn,
     Date TimeOut, Date DateSubmitted, int Approval, String Notes, int Schedule_ScheduleID,
     int EmployeeID, int LeaveID, int DepartmentID, int SignatureID, int HoursTableID, Date testingDate) {
@@ -51,6 +69,7 @@ public class Timesheet {
       HoursTableID = 0;
     }
 
+    //---------getters and setters, no args--------//
     public int getTimeSheetID() {
         return TimeSheetID;
     }
