@@ -14,6 +14,7 @@ import java.util.Arrays;
  */
 public class CurrentUser {
 
+   //Clears the CurrenUser, as part of the log out process. No arg, no params
    public static void clear() {
         user = -1;
         position = -1;
