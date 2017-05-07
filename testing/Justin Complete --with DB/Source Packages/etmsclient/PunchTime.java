@@ -13,7 +13,11 @@ public class PunchTime {
     String clockDate;
     boolean completed;
 
-    //*****Test Constructor****** Incomplete time entry
+    //Default constructor, no params, no args
+    public PunchTime(){}
+
+    //*****Test Constructor ****** Creates Incomplete time entry; that is, a clockin
+    //@params employeeID, timeID, timeIn, clockDate should be fetched from the database on load, through clockin or dashboard
     public PunchTime(int employeeID, int timeID, String timeIn, String clockDate) {
         this.employeeID = employeeID;
         this.completed = false;
@@ -23,7 +27,9 @@ public class PunchTime {
         this.clockDate = clockDate;
     }
 
-    //*****TEST CONSTRUCTOR ******* complete time entry
+    //*****TEST CONSTRUCTOR ******* complete time entry, that is, a clockout
+    //@params employeeID, timeID, timeIn, clockDate should be fetched from the database on load, through clockin or dashboard
+    //@params 
     public PunchTime(int employeeID, int timeID, String timeIn, String timeOut, String clockDate) {
         this.completed = true;
         this.employeeID = employeeID;
@@ -33,6 +39,7 @@ public class PunchTime {
         this.clockDate = clockDate;
     }
 
+    //---------getters and setters, no args--------//
     public int getEmployeeID() {
         return employeeID;
     }
