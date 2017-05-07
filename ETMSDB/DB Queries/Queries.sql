@@ -24,3 +24,19 @@ WHERE etms_schemma.position.PositionID = 1 AND etms_schemma.employee.PositionID 
 SELECT employee.FirstName, employee.MiddleName, employee.LastName, employee.Phone, employee.Email, position.PositionName
 FROM etms_schemma.employee JOIN etms_schemma.position
 WHERE etms_schemma.position.PositionID = 2 AND etms_schemma.employee.PositionID = 2;
+
+-- retrieves the records of admin accounts
+SELECT employee.FirstName, employee.MiddleName, employee.LastName, employee.Phone, employee.Email, position.PositionName
+FROM employee join position
+WHERE position.PositionID = Employee.positionID  AND Employee.positionID =1;
+
+-- retrieves all supervisory acocunts
+SELECT employee.FirstName, employee.MiddleName, employee.LastName, employee.Phone, employee.Email, position.PositionName
+FROM employee join position
+WHERE position.PositionID = Employee.positionID  AND Employee.positionID =2;
+
+-- retrieves all non-supervisory accounts
+SELECT employee.FirstName, employee.MiddleName, employee.LastName, employee.Phone, employee.Email, position.PositionName
+FROM employee join position
+WHERE position.PositionID = Employee.positionID  AND Employee.positionID =3;
+
