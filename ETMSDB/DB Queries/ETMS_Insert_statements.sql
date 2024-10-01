@@ -1,3 +1,5 @@
+/* Author: Wendy C Velasquez Ebanks*/
+
 --Inserts in Employee Table
 INSERT INTO `etms_schemma`.`employee` (`EmployeeID`, `FirstName`, `MiddleName`, `LastName`, `SSN`, `Birthdate`, `StreetNumber`, `City`, `State`, `ZipCode`, `Phone`, `Email`, `PositionID`, `EmployeeTypeID`) VALUES ('00001', 'Ann', 'Marie', 'Kramer', '111-22-3333', '1978-01-23', '2314 New Avenue', 'Ghost Town', 'MD', '20876', '222-333-4455', 'amkramer@email.com', '00001', '00003');
 INSERT INTO `etms_schemma`.`employee` (`EmployeeID`, `FirstName`, `MiddleName`, `LastName`, `SSN`, `Birthdate`, `StreetNumber`, `City`, `State`, `ZipCode`, `Phone`, `Email`, `PositionID`, `EmployeeTypeID`) VALUES ('00002', 'Jesse', 'Holland', 'James', '222-33-4567', '1983-04-22', '1456 West Road', 'Springs Arbor', 'MD', '20101', '221-987-2222', 'JhJames@email.com', '00001', '00001');
