@@ -1,3 +1,5 @@
+/* Author: Wendy C. Velasquez Ebanks*/
+
 -- retrieves the information for the summary of the timesheet
 SELECT employee.FirstName, employee.LastName, timesheet.StartDate, timesheet.TimeIn, timesheet.TimeOut, timesheet.DateSubmitted, timesheet.PayPeriod, timesheet.Approval  
 FROM etms_schemma.timesheet JOIN etms_schemma.employee
@@ -39,4 +41,3 @@ WHERE position.PositionID = Employee.positionID  AND Employee.positionID =2;
 SELECT employee.FirstName, employee.MiddleName, employee.LastName, employee.Phone, employee.Email, position.PositionName
 FROM employee join position
 WHERE position.PositionID = Employee.positionID  AND Employee.positionID =3;
-

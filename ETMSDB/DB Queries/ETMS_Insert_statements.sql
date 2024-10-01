@@ -39,7 +39,7 @@ INSERT INTO `etms_schemma`.`timesheet` (`TimeSheetID`, `StartDate`, `PayPeriod`,
 INSERT INTO `etms_schemma`.`timesheet` (`TimeSheetID`, `StartDate`, `PayPeriod`, `TimeIn`, `TimeOut`, `DateSubmitted`, `Approval`, `Notes`, `Schedule_ScheduleID`, `EmployeeID`, `LeaveID`, `DepartmentID`, `SignatureID`, `HoursTableID`) VALUES ('00005', '2017-01-01', '1', '2017-01-06 8:30:17', '2017-01-06 17:07:09', '2017-01-14 12:30:35', '1', 'None', '1', '2', '8', '2', '1', '2');
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------
----------------------------from this line below are some of the changes made that were captured.-----------
+----from this line below are some of the changes made that were captured.-----------
 -- Updates on signature table 
 ALTER TABLE `etms_schemma`.`signature` 
 ADD COLUMN `PayperiodEnDate` DATE NOT NULL AFTER `SignatureSupervisor`;
